@@ -1,0 +1,110 @@
+<!--pages/question-review/question-review.wxml-->
+<view class="container">
+  <block wx:if="{{loading}}">
+    <view class="loading">
+      <text>加载中...</text>
+    </view>
+  </block>
+  
+  <block wx:elif="{{question}}">
+    <!-- 题目头部信息 -->
+    <view class="question-header">
+      <view class="question-info">
+        <text class="question-number">第{{questionNumber}}题</text>
+        <text class="question-type">{{typeName}}</text>
+      </view>
+      <view class="question-actions">
+        <button class="action-btn {{isFavorited ? 'favorited' : ''}}" bindtap="toggleFavorite">
+          <text class="btn-text">{{isFavorited ? '取消收藏' : '收藏'}}</text>
+        </button>
+      </view>
+    </view>
+
+    <!-- 题目内容 -->
+    <view class="question-content">
+      <!-- 题目描述 -->
+      <view class="question-text">{{question.question}}</view>
+      
+      <!-- 代码块（如果有） -->
+      <view class="code-container" wx:if="{{question.code}}">
+        <view class="code-header">
+          <text class="code-title">代码</text>
+          <text class="code-lang">Python</text>
+        </view>
+        <view class="code-content">
+          <text class="code-text">{{question.code}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 选择题选项 -->
+    <view class="options-container" wx:if="{{question.type === 'choice'}}">
+      <view 
+        class="option-item {{userAnswer === item.key ? 'user-answer' : ''}} {{correctAnswer === item.key ? 'correct-answer' : ''}}"
+        wx:for="{{question.options}}" 
+        wx:key="key"
+      >
+        <view class="option-label">{{item.key}}</view>
+        <view class="option-text">{{item.value}}</view>
+        <view class="option-status">
+          <text wx:if="{{correctAnswer === item.key}}" class="correct-icon">✓</text>
+          <text wx:if="{{userAnswer === item.key && userAnswer !== correctAnswer}}" class="wrong-icon">✗</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 判断题选项 -->
+    <view class="judge-container" wx:if="{{question.type === 'judge'}}">
+      <view class="judge-option {{userAnswer === true ? 'user-answer' : ''}} {{correctAnswer === true ? 'correct-answer' : ''}}">
+        <view class="judge-icon">✓</view>
+        <view class="judge-text">正确</view>
+        <view class="judge-status">
+          <text wx:if="{{correctAnswer === true}}" class="correct-icon">✓</text>
+          <text wx:if="{{userAnswer === true && userAnswer !== correctAnswer}}" class="wrong-icon">✗</text>
+        </view>
+      </view>
+      
+      <view class="judge-option {{userAnswer === false ? 'user-answer' : ''}} {{correctAnswer === false ? 'correct-answer' : ''}}">
+        <view class="judge-icon">✗</view>
+        <view class="judge-text">错误</view>
+        <view class="judge-status">
+          <text wx:if="{{correctAnswer === false}}" class="correct-icon">✓</text>
+          <text wx:if="{{userAnswer === false && userAnswer !== correctAnswer}}" class="wrong-icon">✗</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 答案分析 -->
+    <view class="analysis-container">
+      <view class="analysis-header">
+        <text class="analysis-title">答案分析</text>
+      </view>
+      
+      <view class="answer-comparison">
+        <view class="answer-item user">
+          <view class="answer-label">你的答案</view>
+          <view class="answer-value wrong">
+            {{question.type === 'choice' ? userAnswer : (userAnswer ? '正确' : '错误')}}
+          </view>
+        </view>
+        <view class="answer-item correct">
+          <view class="answer-label">正确答案</view>
+          <view class="answer-value right">
+            {{question.type === 'choice' ? correctAnswer : (correctAnswer ? '正确' : '错误')}}
+          </view>
+        </view>
+      </view>
+      
+      <view class="explanation-content">
+        <view class="explanation-title">详细解析</view>
+        <text class="explanation-text">{{question.explanation}}</text>
+      </view>
+    </view>
+  </block>
+
+  <block wx:else>
+    <view class="empty-tip">
+      <text>题目加载失败</text>
+    </view>
+  </block>
+</view>

@@ -1,0 +1,116 @@
+/* pages/index/index.wxss */
+.container {
+  padding-bottom: 0;
+  background-color: #F8F8F8;
+}
+
+/* 搜索框样式 */
+.search-container {
+  padding: 20rpx;
+  background-color: #4169E1;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  background-color: #FFFFFF;
+  border-radius: 30rpx;
+  padding: 10rpx 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+}
+
+.search-placeholder {
+  flex: 1;
+  height: 60rpx;
+  line-height: 60rpx;
+  margin-left: 10rpx;
+  font-size: 28rpx;
+  color: #999999;
+}
+
+/* 轮播图样式 */
+.banner-container {
+  width: 100%;
+  height: 300rpx;
+  margin-bottom: 20rpx;
+}
+
+.banner-swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.banner-image {
+  width: 100%;
+  height: 100%;
+}
+
+/* 等级选择列表样式 */
+.level-container {
+  padding: 0 20rpx;
+  background-color: #F8F8F8;
+}
+
+.level-item {
+  display: flex;
+  align-items: center;
+  background-color: #FFFFFF;
+  border-radius: 16rpx;
+  border-left: 6rpx solid #4169E1;
+  padding: 24rpx 20rpx;
+  margin-bottom: 16rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.level-item:active {
+  transform: scale(0.98);
+  box-shadow: 0 1rpx 6rpx rgba(0, 0, 0, 0.12);
+}
+
+.level-badge {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  font-size: 28rpx;
+  font-weight: 600;
+  margin-right: 20rpx;
+}
+
+.level-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.level-name {
+  font-size: 32rpx;
+  color: #333333;
+  font-weight: 600;
+  margin-bottom: 6rpx;
+}
+
+.level-desc {
+  font-size: 24rpx;
+  color: #666666;
+}
+
+.level-arrow {
+  color: #CCCCCC;
+  font-size: 28rpx;
+}
+
+/* 加载和空状态样式 */
+.loading, .empty-tip {
+  text-align: center;
+  padding: 40rpx 0;
+  color: #999999;
+  font-size: 28rpx;
+}

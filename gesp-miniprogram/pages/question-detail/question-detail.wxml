@@ -1,0 +1,156 @@
+<!--pages/question-detail/question-detail.wxml-->
+<view class="container">
+  <block wx:if="{{loading}}">
+    <view class="loading">
+      <text>加载中...</text>
+    </view>
+  </block>
+  
+  <block wx:elif="{{currentQuestion}}">
+    <!-- 题目头部信息 -->
+    <view class="question-header">
+      <view class="question-info">
+        <text class="question-number">第{{currentIndex + 1}}题 / 共{{totalCount}}题</text>
+        <text class="question-type">{{typeName}}</text>
+      </view>
+      <view class="question-actions">
+        <button class="action-btn {{isFavorited ? 'favorited' : ''}}" bindtap="toggleFavorite">
+          <text class="btn-text">{{isFavorited ? '取消收藏' : '收藏'}}</text>
+        </button>
+      </view>
+    </view>
+
+    <!-- 题目内容 -->
+    <view class="question-content">
+      <!-- 题目描述 -->
+      <view class="question-text">{{currentQuestion.question}}</view>
+      
+      <!-- 代码块（如果有） -->
+      <view class="code-container" wx:if="{{currentQuestion.code}}">
+        <view class="code-header">
+          <text class="code-title">代码</text>
+          <text class="code-lang">Python</text>
+        </view>
+        <view class="code-content">
+          <text class="code-text">{{currentQuestion.code}}</text>
+        </view>
+      </view>
+      
+      <!-- 答案解析（非考试模式下显示） -->
+      <view class="explanation-container" wx:if="{{!isExamMode && userAnswers[currentQuestion.id]}}">
+        <view class="explanation-header">
+          <text class="explanation-title">答案解析</text>
+        </view>
+        <view class="explanation-content">
+          <view class="answer-info">
+            <text class="answer-label">正确答案：</text>
+            <text class="answer-value">{{currentQuestion.type === 'choice' ? currentQuestion.answer : (currentQuestion.answer ? '正确' : '错误')}}</text>
+          </view>
+          <view class="answer-info">
+            <text class="answer-label">你的答案：</text>
+            <text class="answer-value {{userAnswers[currentQuestion.id] === currentQuestion.answer ? 'correct' : 'wrong'}}">
+              {{currentQuestion.type === 'choice' ? userAnswers[currentQuestion.id] : (userAnswers[currentQuestion.id] ? '正确' : '错误')}}
+            </text>
+          </view>
+          <view class="explanation-text" wx:if="{{currentQuestion.explanation}}">
+            <text>{{currentQuestion.explanation}}</text>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 标签（如果有） -->
+      <view class="tags-container" wx:if="{{!isExamMode && currentQuestion.tags && currentQuestion.tags.length > 0}}">
+        <view class="tag" wx:for="{{currentQuestion.tags}}" wx:key="*this">{{item}}</view>
+      </view>
+    </view>
+
+    <!-- 选择题选项 -->
+    <view class="options-container" wx:if="{{currentQuestion.type === 'choice'}}">
+      <view 
+        class="option-item {{userAnswers[currentQuestion.id] === item.key ? 'selected' : ''}}"
+        wx:for="{{currentQuestion.options}}" 
+        wx:key="key"
+        bindtap="selectAnswer"
+        data-answer="{{item.key}}"
+      >
+        <view class="option-label">{{item.key}}</view>
+        <view class="option-text">{{item.value}}</view>
+        <view class="option-icon" wx:if="{{userAnswers[currentQuestion.id] === item.key}}">✓</view>
+      </view>
+    </view>
+
+    <!-- 判断题选项 -->
+    <view class="judge-container" wx:if="{{currentQuestion.type === 'judge'}}">
+      <view 
+        class="judge-option {{userAnswers[currentQuestion.id] === true ? 'selected' : ''}}"
+        bindtap="selectJudgeAnswer"
+        data-answer="true"
+      >
+        <view class="judge-icon">✓</view>
+        <view class="judge-text">正确</view>
+        <view class="result-icon" wx:if="{{userAnswers[currentQuestion.id] === true}}">✓</view>
+      </view>
+      
+      <view 
+        class="judge-option {{userAnswers[currentQuestion.id] === false ? 'selected' : ''}}"
+        bindtap="selectJudgeAnswer"
+        data-answer="false"
+      >
+        <view class="judge-icon">✗</view>
+        <view class="judge-text">错误</view>
+        <view class="result-icon" wx:if="{{userAnswers[currentQuestion.id] === false}}">✓</view>
+      </view>
+    </view>
+
+    <!-- 答题进度 -->
+    <view class="progress-container">
+      <view class="progress-info">
+        <text class="progress-text">已答题：{{answeredCount}} / {{totalCount}}</text>
+      </view>
+      <view class="progress-bar">
+        <view class="progress-fill" style="width: {{answeredCount / totalCount * 100}}%"></view>
+      </view>
+    </view>
+
+    <!-- 底部操作按钮 -->
+    <view class="bottom-actions">
+      <button 
+        class="nav-btn {{currentIndex === 0 ? 'disabled' : ''}}" 
+        bindtap="prevQuestion"
+        disabled="{{currentIndex === 0}}"
+      >
+        上一题
+      </button>
+      
+      <button 
+        class="nav-btn submit-btn" 
+        bindtap="submitAnswers"
+        wx:if="{{isExamMode && currentIndex === totalCount - 1}}"
+      >
+        提交答案
+      </button>
+      
+      <button 
+        class="nav-btn primary" 
+        bindtap="nextQuestion"
+        wx:elif="{{currentIndex !== totalCount - 1}}"
+      >
+        下一题
+      </button>
+      
+      <button 
+        class="nav-btn" 
+        bindtap="goBack"
+        wx:else
+      >
+        返回
+      </button>
+    </view>
+  </block>
+
+  <block wx:else>
+    <view class="empty-tip">
+      <text>暂无题目数据</text>
+    </view>
+  </block>
+</view>

@@ -1,0 +1,101 @@
+/* pages/question-type/question-type.wxss */
+.container {
+  background-color: #F8F8F8;
+  min-height: 100vh;
+}
+
+/* 页面头部 */
+.page-header {
+  background-color: #4169E1;
+  padding: 40rpx 20rpx;
+  color: #FFFFFF;
+}
+
+.page-title {
+  font-size: 36rpx;
+  font-weight: 600;
+  margin-bottom: 10rpx;
+}
+
+.page-subtitle {
+  font-size: 28rpx;
+  opacity: 0.8;
+}
+
+/* 题型选择列表 */
+.type-container {
+  padding: 20rpx;
+}
+
+.type-item {
+  display: flex;
+  align-items: center;
+  background-color: #FFFFFF;
+  border-radius: 16rpx;
+  padding: 30rpx 20rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.type-item:active {
+  transform: scale(0.98);
+  box-shadow: 0 1rpx 6rpx rgba(0, 0, 0, 0.12);
+}
+
+.type-icon {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+  margin-right: 20rpx;
+}
+
+.type-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.type-name {
+  font-size: 32rpx;
+  color: #333333;
+  font-weight: 600;
+  margin-bottom: 8rpx;
+}
+
+.type-desc {
+  font-size: 26rpx;
+  color: #666666;
+  line-height: 1.4;
+  margin-bottom: 8rpx;
+}
+
+.type-count {
+  display: flex;
+  align-items: center;
+}
+
+.count-text {
+  font-size: 24rpx;
+  color: #4169E1;
+  background-color: #F0F4FF;
+  padding: 4rpx 12rpx;
+  border-radius: 12rpx;
+}
+
+.coming-soon-text {
+  font-size: 24rpx;
+  color: #FF8C00;
+  background-color: #FFF8E1;
+  padding: 4rpx 12rpx;
+  border-radius: 12rpx;
+}
+
+.type-arrow {
+  color: #CCCCCC;
+  font-size: 28rpx;
+}

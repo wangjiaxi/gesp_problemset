@@ -1,0 +1,92 @@
+/* pages/question-time/question-time.wxss */
+.container {
+  background-color: #F8F8F8;
+  min-height: 100vh;
+}
+
+/* 页面头部 */
+.page-header {
+  background-color: #4169E1;
+  padding: 40rpx 20rpx;
+  color: #FFFFFF;
+}
+
+.page-title {
+  font-size: 36rpx;
+  font-weight: 600;
+  margin-bottom: 10rpx;
+}
+
+.page-subtitle {
+  font-size: 28rpx;
+  opacity: 0.8;
+}
+
+/* 时间选择列表 */
+.time-container {
+  padding: 20rpx;
+}
+
+.time-item {
+  display: flex;
+  align-items: center;
+  background-color: #FFFFFF;
+  border-radius: 16rpx;
+  padding: 24rpx 20rpx;
+  margin-bottom: 16rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.time-item:active {
+  transform: scale(0.98);
+  box-shadow: 0 1rpx 6rpx rgba(0, 0, 0, 0.12);
+}
+
+.time-date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100rpx;
+  height: 80rpx;
+  background-color: #4169E1;
+  border-radius: 12rpx;
+  margin-right: 20rpx;
+  color: #FFFFFF;
+}
+
+.time-year {
+  font-size: 24rpx;
+  line-height: 1;
+}
+
+.time-month {
+  font-size: 28rpx;
+  font-weight: 600;
+  line-height: 1;
+  margin-top: 4rpx;
+}
+
+.time-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.time-text {
+  font-size: 32rpx;
+  color: #333333;
+  font-weight: 500;
+  margin-bottom: 6rpx;
+}
+
+.time-count {
+  font-size: 24rpx;
+  color: #666666;
+}
+
+.time-arrow {
+  color: #CCCCCC;
+  font-size: 28rpx;
+}

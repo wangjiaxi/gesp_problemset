@@ -1,0 +1,112 @@
+<!--pages/search/search.wxml-->
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <view class="search-input-container">
+      <input 
+        class="search-input" 
+        placeholder="搜索题目" 
+        value="{{searchValue}}"
+        bindinput="onSearchInput"
+        confirm-type="search"
+        bindconfirm="onSearchTap"
+      />
+      <view class="search-clear" wx:if="{{searchValue.length > 0}}" bindtap="onClearInput">
+        <text class="clear-icon">×</text>
+      </view>
+    </view>
+    <button class="search-btn" bindtap="onSearchTap">搜索</button>
+  </view>
+
+  <!-- 搜索历史 -->
+  <view class="search-history" wx:if="{{showHistory && searchHistory.length > 0}}">
+    <view class="section-header">
+      <text class="section-title">搜索历史</text>
+      <text class="clear-history" bindtap="onClearHistory">清空</text>
+    </view>
+    <view class="history-list">
+      <view 
+        class="history-item" 
+        wx:for="{{searchHistory}}" 
+        wx:key="*this"
+        bindtap="onHistoryTap"
+        data-keyword="{{item}}">
+        <text class="history-text">{{item}}</text>
+        <view class="delete-history" bindtap="onDeleteHistory" data-keyword="{{item}}" catchtap="true">
+          <text class="delete-icon">×</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 热门搜索 -->
+  <view class="hot-search" wx:if="{{showHistory}}">
+    <view class="section-header">
+      <text class="section-title">热门搜索</text>
+    </view>
+    <view class="hot-list">
+      <view 
+        class="hot-item" 
+        wx:for="{{hotSearches}}" 
+        wx:key="*this"
+        bindtap="onHotSearchTap"
+        data-keyword="{{item}}">
+        <text class="hot-text">{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 搜索中状态 -->
+  <view class="loading-container" wx:if="{{isSearching}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">搜索中...</text>
+  </view>
+
+  <!-- 搜索结果 -->
+  <view class="search-results" wx:if="{{hasSearched && !isSearching}}">
+    <view class="results-header">
+      <text class="results-count">找到 {{searchResults.length}} 道相关题目</text>
+      <view class="results-stats" wx:if="{{searchResults.length > 0}}">
+        <text class="stats-item">选择题 {{searchStats.byType['选择题'] || 0}}</text>
+        <text class="stats-item">判断题 {{searchStats.byType['判断题'] || 0}}</text>
+      </view>
+    </view>
+    
+    <!-- 无结果 -->
+    <view class="no-results" wx:if="{{searchResults.length === 0}}">
+      <view class="no-results-icon">🔍</view>
+      <text class="no-results-title">未找到相关题目</text>
+      <text class="no-results-desc">试试其他关键词吧</text>
+    </view>
+
+    <!-- 结果列表 -->
+    <view class="results-list" wx:if="{{searchResults.length > 0}}">
+      <view 
+        class="result-item" 
+        wx:for="{{searchResults}}" 
+        wx:key="id"
+        bindtap="onQuestionTap"
+        data-id="{{item.id}}">
+        
+        <view class="question-header">
+          <view class="question-meta">
+            <text class="question-type">{{item.type === 'choice' ? '选择题' : '判断题'}}</text>
+            <text class="question-level">Level {{item.level}}</text>
+            <text class="question-difficulty">{{item.difficulty === 1 ? '★☆☆☆☆' : item.difficulty === 2 ? '★★☆☆☆' : item.difficulty === 3 ? '★★★☆☆' : item.difficulty === 4 ? '★★★★☆' : '★★★★★'}}</text>
+          </view>
+        </view>
+        
+        <view class="question-content">
+          <text class="question-text">{{item.question}}</text>
+          <view class="question-code" wx:if="{{item.code}}">
+            <text class="code-text">{{item.code}}</text>
+          </view>
+        </view>
+        
+        <view class="question-tags" wx:if="{{item.tags && item.tags.length > 0}}">
+          <text class="tag" wx:for="{{item.tags}}" wx:key="*this" wx:for-item="tag">{{tag}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,48 @@
+/* pages/coming-soon/coming-soon.wxss */
+.container {
+  min-height: 100vh;
+  background-color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40rpx;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.title {
+  font-size: 48rpx;
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 30rpx;
+}
+
+.subtitle {
+  font-size: 32rpx;
+  color: #666666;
+  margin-bottom: 20rpx;
+}
+
+.description {
+  font-size: 28rpx;
+  color: #999999;
+  margin-bottom: 60rpx;
+}
+
+.home-btn {
+  background-color: #4169E1;
+  color: #FFFFFF;
+  font-size: 28rpx;
+  padding: 20rpx 60rpx;
+  border-radius: 30rpx;
+  border: none;
+}
+
+.home-btn:active {
+  background-color: #3557C7;
+}

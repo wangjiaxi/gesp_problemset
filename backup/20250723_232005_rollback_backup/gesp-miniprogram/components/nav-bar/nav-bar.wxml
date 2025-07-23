@@ -1,0 +1,21 @@
+<!--components/nav-bar/nav-bar.wxml-->
+<view class="nav-bar">
+  <view class="nav-bar-content">
+    <view 
+      class="nav-item {{active === item.key ? 'active' : ''}}" 
+      wx:for="{{tabs}}" 
+      wx:key="key"
+      bindtap="switchTab"
+      data-key="{{item.key}}"
+      data-url="{{item.url}}"
+    >
+      <image 
+        class="nav-icon" 
+        src="{{active === item.key ? item.iconActive : item.icon}}"
+        mode="aspectFit"
+      ></image>
+      <text class="nav-text">{{item.text}}</text>
+    </view>
+  </view>
+  <view class="nav-bar-safe-area"></view>
+</view>

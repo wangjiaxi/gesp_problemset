@@ -1,0 +1,19 @@
+{
+  "id": "2024_12_06",
+  "year": 2024,
+  "month": 12,
+  "level": 3,
+  "type": "choice",
+  "question": "以下代码执行后，列表a的内容是什么？",
+  "code": "a = [1, 2, 3]\nb = a\nb.append(4)\na.extend([5, 6])\nprint(a)",
+  "options": [
+    {"key": "A", "value": "[1, 2, 3]"},
+    {"key": "B", "value": "[1, 2, 3, 4]"},
+    {"key": "C", "value": "[1, 2, 3, 4, 5, 6]"},
+    {"key": "D", "value": "[1, 2, 3, 5, 6]"}
+  ],
+  "answer": "C",
+  "explanation": "b = a 创建的是引用，a和b指向同一个列表对象。b.append(4)后列表变为[1,2,3,4]，然后a.extend([5,6])后列表变为[1,2,3,4,5,6]。",
+  "difficulty": 3,
+  "tags": ["列表", "引用", "append", "extend"]
+}

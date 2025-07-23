@@ -1,0 +1,67 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+  <!-- 搜索框 -->
+  <view class="search-container">
+    <view class="search-box" bindtap="onSearchTap">
+      <icon type="search" size="14" color="#999999"></icon>
+      <text class="search-placeholder">搜索题目</text>
+    </view>
+  </view>
+
+  <!-- 轮播图 -->
+  <view class="banner-container" wx:if="{{banners && banners.length > 0}}">
+    <swiper 
+      class="banner-swiper" 
+      indicator-dots="{{banners.length > 1}}"
+      autoplay="{{true}}" 
+      interval="{{3000}}" 
+      duration="{{500}}"
+      circular="{{true}}"
+      indicator-color="rgba(255, 255, 255, 0.6)"
+      indicator-active-color="#FFFFFF"
+    >
+      <block wx:for="{{banners}}" wx:key="id">
+        <swiper-item bindtap="onBannerTap" data-url="{{item.url}}">
+          <image src="{{item.image}}" class="banner-image" mode="aspectFill"></image>
+        </swiper-item>
+      </block>
+    </swiper>
+  </view>
+
+  <!-- 等级选择列表 -->
+  <view class="level-container">
+    <block wx:if="{{loading}}">
+      <view class="loading">
+        <text>加载中...</text>
+      </view>
+    </block>
+    <block wx:elif="{{levels && levels.length > 0}}">
+      <view 
+        class="level-item" 
+        wx:for="{{levels}}" 
+        wx:key="id"
+        bindtap="onLevelTap"
+        data-id="{{item.id}}"
+        data-name="{{item.name}}"
+        style="border-left-color: {{item.color}}"
+      >
+        <view class="level-badge" style="background-color: {{item.color}}">
+          {{item.name}}
+        </view>
+        <view class="level-info">
+          <view class="level-name">{{item.description}}</view>
+          <view class="level-desc">包含选择题和判断题</view>
+        </view>
+        <view class="level-arrow">
+          <text class="arrow">></text>
+        </view>
+      </view>
+    </block>
+    <block wx:else>
+      <view class="empty-tip">
+        <text>暂无等级分类</text>
+      </view>
+    </block>
+  </view>
+
+</view>

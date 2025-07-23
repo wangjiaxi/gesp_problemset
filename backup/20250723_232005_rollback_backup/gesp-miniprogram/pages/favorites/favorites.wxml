@@ -1,0 +1,81 @@
+<!--pages/favorites/favorites.wxml-->
+<view class="container">
+  <!-- 工具栏 -->
+  <view class="toolbar" wx:if="{{favoriteList.length > 0}}">
+    <view class="toolbar-left">
+      <text class="count-text">共{{favoriteList.length}}道题目</text>
+    </view>
+    <view class="toolbar-right">
+      <text class="edit-btn" bindtap="toggleEditMode">
+        {{editMode ? '取消' : '管理'}}
+      </text>
+    </view>
+  </view>
+
+  <!-- 编辑模式工具栏 -->
+  <view class="edit-toolbar" wx:if="{{editMode}}">
+    <view class="edit-actions">
+      <text class="select-all-btn" bindtap="onSelectAll">
+        {{selectedItems.length === favoriteList.length ? '取消全选' : '全选'}}
+      </text>
+      <text class="delete-btn" bindtap="onDeleteSelected">
+        删除选中({{selectedItems.length}})
+      </text>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading-container" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-container" wx:if="{{isEmpty && !loading}}">
+    <view class="empty-icon">📚</view>
+    <text class="empty-title">暂无收藏题目</text>
+    <text class="empty-desc">去题库收藏一些题目吧</text>
+    <button class="go-browse-btn" bindtap="goToBrowse">去刷题</button>
+  </view>
+
+  <!-- 收藏列表 -->
+  <view class="favorite-list" wx:if="{{!isEmpty && !loading}}">
+    <view 
+      class="question-item {{editMode ? 'edit-mode' : ''}}" 
+      wx:for="{{favoriteList}}" 
+      wx:key="id"
+      bindtap="{{editMode ? 'onSelectItem' : 'onQuestionTap'}}"
+      data-id="{{item.id}}">
+      
+      <!-- 选择框 -->
+      <view class="select-box" wx:if="{{editMode}}">
+        <view class="checkbox {{selectedItems.indexOf(item.id) > -1 ? 'checked' : ''}}">
+          <text class="check-icon" wx:if="{{selectedItems.indexOf(item.id) > -1}}">✓</text>
+        </view>
+      </view>
+
+      <!-- 题目内容 -->
+      <view class="question-content">
+        <view class="question-header">
+          <view class="question-meta">
+            <text class="question-type">{{item.type === 'choice' ? '选择题' : item.type === 'judge' ? '判断题' : '编程题'}}</text>
+            <text class="question-level">Level {{item.level}}</text>
+            <text class="question-difficulty">{{item.difficulty === 1 ? '★☆☆☆☆' : item.difficulty === 2 ? '★★☆☆☆' : item.difficulty === 3 ? '★★★☆☆' : item.difficulty === 4 ? '★★★★☆' : '★★★★★'}}</text>
+          </view>
+          <view class="favorite-time">{{item.favoriteTime}}</view>
+        </view>
+        
+        <view class="question-text">{{item.question}}</view>
+        
+        <view class="question-tags" wx:if="{{item.tags && item.tags.length > 0}}">
+          <text class="tag" wx:for="{{item.tags}}" wx:key="*this" wx:for-item="tag">{{tag}}</text>
+        </view>
+      </view>
+
+      <!-- 操作按钮 -->
+      <view class="question-actions" wx:if="{{!editMode}}">
+        <text class="unfavorite-btn" bindtap="onUnfavorite" data-id="{{item.id}}" catchtap="true">取消收藏</text>
+      </view>
+    </view>
+  </view>
+</view>

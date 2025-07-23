@@ -1,0 +1,61 @@
+<!--pages/profile-edit/profile-edit.wxml-->
+<view class="container">
+  <!-- 头像区域 -->
+  <view class="avatar-section">
+    <view class="avatar-container" bindtap="onAvatarTap">
+      <image 
+        class="avatar-image" 
+        src="{{userInfo.avatarUrl}}" 
+        mode="aspectFill"
+        bindtap="onPreviewAvatar"
+        catchtap="onPreviewAvatar"
+      ></image>
+      <view class="avatar-overlay">
+        <text class="avatar-tip">点击更换头像</text>
+      </view>
+    </view>
+    <text class="avatar-desc">支持使用微信头像或从相册选择</text>
+  </view>
+
+  <!-- 昵称区域 -->
+  <view class="nickname-section">
+    <view class="section-title">昵称设置</view>
+    <view class="nickname-container" bindtap="onNickNameTap">
+      <view class="nickname-content">
+        <text class="nickname-text">{{userInfo.nickName}}</text>
+        <view class="nickname-arrow">
+          <text class="arrow">></text>
+        </view>
+      </view>
+      <text class="nickname-tip">点击设置昵称</text>
+    </view>
+  </view>
+
+  <!-- 用户信息预览 -->
+  <view class="preview-section">
+    <view class="section-title">预览效果</view>
+    <view class="user-preview">
+      <image class="preview-avatar" src="{{userInfo.avatarUrl}}" mode="aspectFill"></image>
+      <view class="preview-info">
+        <text class="preview-nickname">{{userInfo.nickName}}</text>
+        <text class="preview-desc">GESP刷题达人</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 说明信息 -->
+  <view class="info-section">
+    <view class="info-card">
+      <view class="info-header">
+        <text class="info-icon">🔒</text>
+        <text class="info-title">隐私说明</text>
+      </view>
+      <text class="info-content">您的头像和昵称仅在本地存储和显示，不会上传到服务器或进行任何形式的数据采集。</text>
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-section">
+    <button class="reset-btn" bindtap="onResetTap">重置信息</button>
+  </view>
+</view>

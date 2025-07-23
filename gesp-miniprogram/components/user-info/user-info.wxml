@@ -1,0 +1,40 @@
+<!--components/user-info/user-info.wxml-->
+<view class="user-info-container">
+  <!-- 本地用户信息状态 -->
+  <block wx:if="{{hasLocalUserInfo}}">
+    <view class="user-info" bindtap="goToEditProfile">
+      <image class="avatar" src="{{localUserInfo.avatarUrl}}" mode="aspectFill"></image>
+      <view class="user-text">
+        <text class="nickname">{{localUserInfo.nickName}}</text>
+        <text class="user-desc">GESP刷题达人</text>
+        <text class="edit-tip">点击编辑资料</text>
+      </view>
+    </view>
+  </block>
+  
+  <!-- 微信登录用户状态 -->
+  <block wx:elif="{{hasUserInfo}}">
+    <view class="user-info" bindtap="goToEditProfile">
+      <image class="avatar" src="{{userInfo.avatarUrl}}" mode="aspectFill"></image>
+      <view class="user-text">
+        <text class="nickname">{{userInfo.nickName}}</text>
+        <text class="user-desc">GESP刷题达人</text>
+        <text class="edit-tip">点击编辑资料</text>
+      </view>
+    </view>
+  </block>
+  
+  <!-- 未设置状态 -->
+  <block wx:else>
+    <view class="user-info-placeholder">
+      <view class="default-avatar">
+        <text class="avatar-icon">👤</text>
+      </view>
+      <view class="placeholder-actions">
+        <button class="edit-profile-btn" bindtap="goToEditProfile">设置头像昵称</button>
+        <button class="login-btn" bindtap="wxLogin">微信登录</button>
+      </view>
+      <text class="login-tip">可设置个人资料或使用微信登录</text>
+    </view>
+  </block>
+</view>

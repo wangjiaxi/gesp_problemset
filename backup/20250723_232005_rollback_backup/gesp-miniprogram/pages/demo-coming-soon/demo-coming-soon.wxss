@@ -1,0 +1,71 @@
+/* pages/demo-coming-soon/demo-coming-soon.wxss */
+.container {
+  padding: 20rpx;
+  background-color: #F8F8F8;
+  min-height: 100vh;
+}
+
+.header {
+  text-align: center;
+  padding: 40rpx 0;
+}
+
+.title {
+  display: block;
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 20rpx;
+}
+
+.subtitle {
+  display: block;
+  font-size: 28rpx;
+  color: #666666;
+}
+
+.category-list {
+  margin-top: 40rpx;
+}
+
+.category-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #FFFFFF;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  border-radius: 12rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.category-item:active {
+  background-color: #F5F5F5;
+}
+
+.category-name {
+  font-size: 30rpx;
+  color: #333333;
+}
+
+.category-status {
+  font-size: 24rpx;
+  padding: 8rpx 16rpx;
+  border-radius: 16rpx;
+  color: #FFFFFF;
+  background-color: #4169E1;
+}
+
+.demo-section {
+  margin-top: 60rpx;
+  text-align: center;
+}
+
+.demo-btn {
+  background-color: #FF6B6B;
+  color: #FFFFFF;
+  font-size: 28rpx;
+  padding: 20rpx 40rpx;
+  border-radius: 30rpx;
+  border: none;
+}

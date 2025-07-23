@@ -1,0 +1,33 @@
+<!--pages/question-time/question-time.wxml-->
+<view class="container">
+  <!-- 页面标题 -->
+  <view class="page-header">
+    <view class="page-title">选择考试场次</view>
+    <view class="page-subtitle">{{levelName}} {{typeName}}</view>
+  </view>
+
+  <!-- 时间选择列表 -->
+  <view class="time-container">
+    <view 
+      class="time-item" 
+      wx:for="{{timeOptions}}" 
+      wx:key="id"
+      bindtap="onTimeTap"
+      data-id="{{item.id}}"
+      data-year="{{item.year}}"
+      data-month="{{item.month}}"
+    >
+      <view class="time-date">
+        <view class="time-year">{{item.year}}</view>
+        <view class="time-month">{{item.month}}月</view>
+      </view>
+      <view class="time-info">
+        <view class="time-text">{{item.displayText}}</view>
+        <view class="time-count">{{item.count}}题</view>
+      </view>
+      <view class="time-arrow">
+        <text class="arrow">></text>
+      </view>
+    </view>
+  </view>
+</view>

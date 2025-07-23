@@ -1,0 +1,109 @@
+<!--pages/history/history.wxml-->
+<view class="container">
+  <!-- 统计信息 -->
+  <view class="statistics-container" wx:if="{{!isEmpty && !loading}}">
+    <view class="stats-header">
+      <text class="stats-title">刷题统计</text>
+      <text class="clear-btn" bindtap="onClearHistory">清空记录</text>
+    </view>
+    <view class="stats-content">
+      <view class="stat-item">
+        <text class="stat-number">{{statistics.totalQuestions}}</text>
+        <text class="stat-label">总题数</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-number correct">{{statistics.correctCount}}</text>
+        <text class="stat-label">正确</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-number wrong">{{statistics.wrongCount}}</text>
+        <text class="stat-label">错误</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-number">{{statistics.accuracy}}%</text>
+        <text class="stat-label">正确率</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 标签页 -->
+  <view class="tabs-container" wx:if="{{!isEmpty && !loading}}">
+    <view class="tab-item {{currentTab === 0 ? 'active' : ''}}" bindtap="onTabChange" data-tab="0">
+      <text>全部({{historyList.length}})</text>
+    </view>
+    <view class="tab-item {{currentTab === 1 ? 'active' : ''}}" bindtap="onTabChange" data-tab="1">
+      <text>正确({{statistics.correctCount}})</text>
+    </view>
+    <view class="tab-item {{currentTab === 2 ? 'active' : ''}}" bindtap="onTabChange" data-tab="2">
+      <text>错误({{statistics.wrongCount}})</text>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading-container" wx:if="{{loading}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-container" wx:if="{{isEmpty && !loading}}">
+    <view class="empty-icon">📊</view>
+    <text class="empty-title">暂无刷题记录</text>
+    <text class="empty-desc">开始刷题来记录你的学习轨迹吧</text>
+    <button class="go-browse-btn" bindtap="goToBrowse">开始刷题</button>
+  </view>
+
+  <!-- 历史记录列表 -->
+  <view class="history-list" wx:if="{{!isEmpty && !loading}}">
+    <view 
+      class="history-item" 
+      wx:for="{{filteredList}}" 
+      wx:key="id"
+      bindtap="onQuestionTap"
+      data-question-id="{{item.questionId}}">
+      
+      <!-- 结果标识 -->
+      <view class="result-indicator {{item.isCorrect ? 'correct' : 'wrong'}}">
+        <text class="result-icon">{{item.isCorrect ? '✓' : '✗'}}</text>
+      </view>
+
+      <!-- 题目内容 -->
+      <view class="question-content">
+        <view class="question-header">
+          <view class="question-meta">
+            <text class="question-type">{{item.type === 'choice' ? '选择题' : item.type === 'judge' ? '判断题' : '编程题'}}</text>
+            <text class="question-level">Level {{item.level}}</text>
+            <text class="question-difficulty">{{item.difficulty === 1 ? '★☆☆☆☆' : item.difficulty === 2 ? '★★☆☆☆' : item.difficulty === 3 ? '★★★☆☆' : item.difficulty === 4 ? '★★★★☆' : '★★★★★'}}</text>
+          </view>
+          <view class="answer-time">{{item.answerTime}}</view>
+        </view>
+        
+        <view class="question-text">{{item.question}}</view>
+        
+        <view class="answer-info">
+          <view class="answer-row">
+            <text class="answer-label">你的答案：</text>
+            <text class="user-answer {{item.isCorrect ? 'correct' : 'wrong'}}">{{item.userAnswer}}</text>
+          </view>
+          <view class="answer-row" wx:if="{{!item.isCorrect}}">
+            <text class="answer-label">正确答案：</text>
+            <text class="correct-answer">{{item.correctAnswer}}</text>
+          </view>
+          <view class="answer-row">
+            <text class="answer-label">用时：</text>
+            <text class="time-spent">{{item.timeSpent < 60 ? item.timeSpent + '秒' : Math.floor(item.timeSpent / 60) + '分' + (item.timeSpent % 60) + '秒'}}</text>
+          </view>
+        </view>
+        
+        <view class="question-tags" wx:if="{{item.tags && item.tags.length > 0}}">
+          <text class="tag" wx:for="{{item.tags}}" wx:key="*this" wx:for-item="tag">{{tag}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空筛选结果 -->
+    <view class="empty-filter" wx:if="{{filteredList.length === 0}}">
+      <text class="empty-filter-text">暂无{{currentTab === 1 ? '正确' : '错误'}}记录</text>
+    </view>
+  </view>
+</view>

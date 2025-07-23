@@ -1,0 +1,47 @@
+<!--pages/profile/profile.wxml-->
+<view class="container">
+  <!-- 用户信息组件 -->
+  <user-info 
+    userInfo="{{userInfo}}" 
+    hasUserInfo="{{hasUserInfo}}"
+    bind:getuserinfo="getUserInfo"
+    bind:loginSuccess="onLoginSuccess">
+  </user-info>
+
+  <!-- 功能菜单 -->
+  <view class="menu-container">
+    <!-- 题目收藏 -->
+    <view class="menu-item" bindtap="navigateToFavorites">
+      <view class="menu-icon-container">
+        <text class="menu-icon">✨</text>
+      </view>
+      <view class="menu-info">
+        <text class="menu-name">题目收藏</text>
+        <text class="menu-count">{{favoriteCount}}题</text>
+      </view>
+      <view class="menu-arrow">
+        <text class="arrow">></text>
+      </view>
+    </view>
+
+    <!-- 刷题记录 -->
+    <view class="menu-item" bindtap="navigateToHistory">
+      <view class="menu-icon-container">
+        <text class="menu-icon">📝</text>
+      </view>
+      <view class="menu-info">
+        <text class="menu-name">刷题记录</text>
+        <text class="menu-count">{{historyCount}}题</text>
+      </view>
+      <view class="menu-arrow">
+        <text class="arrow">></text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 版本信息 -->
+  <view class="version-info">
+    <text>GESP刷题 v1.0.0</text>
+  </view>
+
+</view>

@@ -1,0 +1,9 @@
+<!--pages/coming-soon/coming-soon.wxml-->
+<view class="container">
+  <view class="content">
+    <text class="title">敬请期待</text>
+    <text class="subtitle" wx:if="{{categoryName}}">{{categoryName}}</text>
+    <text class="description">该分类题目正在准备中</text>
+    <button class="home-btn" bindtap="goToHome">回到首页</button>
+  </view>
+</view>

@@ -1,0 +1,68 @@
+/* pages/profile/profile.wxss */
+.container {
+  padding-bottom: 0;
+  background-color: #F8F8F8;
+}
+
+/* 用户信息组件样式已移至组件内部 */
+user-info {
+  margin-bottom: 20rpx;
+}
+
+/* 功能菜单样式 */
+.menu-container {
+  padding: 20rpx;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  background-color: #FFFFFF;
+  border-radius: 12rpx;
+  padding: 30rpx 20rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.menu-icon-container {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20rpx;
+}
+
+.menu-icon {
+  font-size: 40rpx;
+}
+
+.menu-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-name {
+  font-size: 32rpx;
+  color: #333333;
+  margin-bottom: 6rpx;
+}
+
+.menu-count {
+  font-size: 24rpx;
+  color: #999999;
+}
+
+.menu-arrow {
+  color: #CCCCCC;
+  font-size: 32rpx;
+}
+
+/* 版本信息样式 */
+.version-info {
+  text-align: center;
+  padding: 40rpx 0;
+  color: #999999;
+  font-size: 24rpx;
+}

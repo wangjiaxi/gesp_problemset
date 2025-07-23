@@ -1,0 +1,16 @@
+这个文件夹用于存放小程序的图片资源。
+
+在实际开发中，您需要准备以下图片：
+
+1. icon-question-bank.png - 题库图标（未选中状态）
+2. icon-question-bank-active.png - 题库图标（选中状态）
+3. icon-profile.png - 个人中心图标（未选中状态）
+4. icon-profile-active.png - 个人中心图标（选中状态）
+5. banner-java.png - Java题库轮播图
+6. java-choice.png - Java选择题图标
+7. java-blank.png - Java填空题图标
+8. java-judge.png - Java判断题图标
+9. java-code.png - Java代码分析题图标
+10. java-big.png - Java大题图标
+
+您可以使用设计工具创建这些图标，或者从网上下载适合的图标。

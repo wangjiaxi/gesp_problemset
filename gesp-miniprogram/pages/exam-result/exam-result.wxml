@@ -1,0 +1,44 @@
+<!--pages/exam-result/exam-result.wxml-->
+<view class="container">
+  <!-- 成绩展示 -->
+  <view class="score-container">
+    <view class="score-circle {{isPassed ? 'passed' : 'failed'}}">
+      <view class="score-text">{{score}}</view>
+      <view class="score-total">/ {{maxScore}}</view>
+    </view>
+    <view class="score-info">
+      <view class="score-title">{{isPassed ? '恭喜通过！' : '继续努力！'}}</view>
+      <view class="score-subtitle">{{levelName}} {{typeName}} 考试结果</view>
+      <view class="score-details">
+        <text class="detail-item">正确：{{totalCount - wrongCount}}题</text>
+        <text class="detail-item">错误：{{wrongCount}}题</text>
+        <text class="detail-item">及格线：{{passScore}}分</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 答题详情 -->
+  <view class="answer-detail-container">
+    <view class="section-title">
+      <text class="title-text">答题详情</text>
+      <text class="title-count">{{totalCount}}题</text>
+    </view>
+    <view class="answer-grid {{typeName === '选择题' ? 'choice-grid' : 'judge-grid'}}">
+      <view 
+        class="answer-dot {{item.isCorrect ? 'correct' : 'wrong'}}" 
+        wx:for="{{answerDetails}}" 
+        wx:key="questionNumber"
+        bindtap="viewQuestionDetail"
+        data-number="{{item.questionNumber}}"
+      >
+        {{item.questionNumber}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-container">
+    <button class="action-btn secondary" bindtap="retakeExam">重新考试</button>
+    <button class="action-btn primary" bindtap="goHome">返回首页</button>
+  </view>
+</view>
