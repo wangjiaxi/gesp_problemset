@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>题目管理工具</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>题目管理工具</h1>
+        <p>通过此工具可以方便地管理小程序本地的题目文件</p>
+    </header>
+    <main>
+        <div class="sidebar">
+            <h2>题目分类</h2>
+            <div class="filter-group">
+                <label for="level-filter">难度等级:</label>
+                <select id="level-filter">
+                    <option value="all">全部等级</option>
+                    <option value="1">等级1</option>
+                    <option value="2">等级2</option>
+                    <option value="3">等级3</option>
+                    <option value="4">等级4</option>
+                    <option value="5">等级5</option>
+                    <option value="6">等级6</option>
+                    <option value="7">等级7</option>
+                    <option value="8">等级8</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="type-filter">题目类型:</label>
+                <select id="type-filter">
+                    <option value="all">全部类型</option>
+                    <option value="choice">选择题</option>
+                    <option value="judge">判断题</option>
+                </select>
+            </div>
+            <button id="refresh-btn">刷新列表</button>
+            <button id="new-question-btn">新建题目</button>
+        </div>
+        <div class="content">
+            <div class="question-list-header">
+                <h2>题目列表</h2>
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="搜索题目...">
+                    <button id="search-btn">搜索</button>
+                </div>
+
+            </div>
+            <div id="question-list"></div>
+            <div id="pagination"></div>
+        </div>
+    </main>
+    <div id="question-editor" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 id="editor-title">编辑题目</h2>
+            <form id="question-form">
+                            <div class="form-group">
+                    <label for="question">题目内容</label>
+                    <textarea id="question" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>代码块（可选）</label>
+                    <div class="code-editor">
+                        <select id="codeLanguage">
+                            <option value="javascript">JavaScript</option>
+                            <option value="python">Python</option>
+                            <option value="java">Java</option>
+                            <option value="c">C</option>
+                            <option value="cpp">C++</option>
+                            <option value="html">HTML</option>
+                            <option value="css">CSS</option>
+                            <option value="none">无</option>
+                        </select>
+                        <textarea id="codeBlock" rows="6" placeholder="在此输入代码块..."></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>图片上传（可选）</label>
+                    <div class="image-upload">
+                        <input type="file" id="imageUpload" accept="image/*" multiple/>
+                        <div id="imagePreview"></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
