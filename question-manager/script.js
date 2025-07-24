@@ -35,11 +35,21 @@ document.addEventListener('DOMContentLoaded', function() {
         initImageUpload();
         loadQuestions();
         initCarouselManager();
+        initImportExportButtons();
 
     // 轮播图管理初始化
     function initCarouselManager() {
         // 加载保存的轮播图数据
         loadCarouselData();
+
+        // 创建文件导入控件
+        const importCarouselBtn = document.createElement('input');
+        importCarouselBtn.type = 'file';
+        importCarouselBtn.accept = '.json';
+        importCarouselBtn.style.display = 'none';
+        importCarouselBtn.id = 'import-carousel-btn';
+        importCarouselBtn.addEventListener('change', loadCarouselDataFromFile);
+        document.body.appendChild(importCarouselBtn);
 
         // 模态框控制
         carouselManagerBtn.addEventListener('click', openCarouselManager);
@@ -188,6 +198,32 @@ document.addEventListener('DOMContentLoaded', function() {
         renderCarouselImages();
     }
 
+    // 保存轮播图设置到文件
+    function saveCarouselSettingsToFile() {
+        const intervalTime = parseInt(intervalTimeInput.value);
+        const carouselImages = JSON.parse(localStorage.getItem('carouselImages') || '[]');
+        
+        const carouselData = {
+            intervalTime: intervalTime,
+            images: carouselImages
+        };
+        
+        const dataStr = JSON.stringify(carouselData, null, 2);
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(dataBlob);
+        
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'carousel_config.json';
+        document.body.appendChild(a);
+        a.click();
+        
+        setTimeout(() => {
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }, 0);
+    }
+
     // 保存轮播图设置
     function saveCarouselSettings() {
         const intervalTime = parseInt(intervalTimeInput.value);
@@ -204,12 +240,37 @@ document.addEventListener('DOMContentLoaded', function() {
         // 保存图片
         localStorage.setItem('carouselImages', JSON.stringify(carouselImages));
 
+        // 保存到文件
+        saveCarouselSettingsToFile();
+
         // 清空预览并重新渲染列表
         carouselImagePreview.innerHTML = '';
         renderCarouselImages();
 
         // 显示保存成功提示
-        alert('轮播图设置已保存！');
+        alert('轮播图设置已保存并导出到文件！');
+    }
+
+    // 从文件加载轮播图数据
+    function loadCarouselDataFromFile(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                const carouselData = JSON.parse(e.target.result);
+                localStorage.setItem('carouselInterval', carouselData.intervalTime);
+                localStorage.setItem('carouselImages', JSON.stringify(carouselData.images));
+                
+                intervalTimeInput.value = carouselData.intervalTime;
+                renderCarouselImages();
+                alert('轮播图数据加载成功！');
+            } catch (error) {
+                alert('加载轮播图数据失败：' + error.message);
+            }
+        };
+        reader.readAsText(file);
     }
 
     // 加载轮播图数据
@@ -231,12 +292,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // 加载题目
     function loadQuestions() {
         showStatus('loading', '正在加载题目...');
-        // 在实际应用中，这里会通过后端API获取题目数据
-        // 这里我们模拟加载本地存储的题目
+        
+        // 实际应用中，这里应该通过后端API从固定目录加载题目
+        // 这里我们模拟从小程序的固定题目目录加载
         setTimeout(() => {
-            // 模拟从文件系统加载题目
-            // 实际应用中需要后端支持
-            questions = [
+            // 模拟从 /gesp-miniprogram/data/questions 目录加载题目
+            // 在实际后端实现中，应该遍历该目录下的所有JSON文件
+            questions = [];
+            
+            // 模拟加载level_1/choice目录下的题目
+            const level1ChoiceQuestions = [
                 {
                     id: '2024_12_01',
                     year: 2024,
@@ -254,7 +319,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     explanation: 'Python变量命名规则：只能包含字母、数字和下划线，不能以数字开头，不能使用关键字。选项B符合规则。',
                     difficulty: 1,
                     tags: ['变量命名', '基础语法']
-                },
+                }
+            ];
+            
+            // 模拟加载level_1/judge目录下的题目
+            const level1JudgeQuestions = [
                 {
                     id: '2024_12_02',
                     year: 2024,
@@ -269,11 +338,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     tags: ['语言特性', '基础概念']
                 }
             ];
-
+            
+            // 合并所有题目
+            questions = [...level1ChoiceQuestions, ...level1JudgeQuestions];
+            
+            // 保存到本地存储作为缓存
+            localStorage.setItem('questions', JSON.stringify(questions));
+            
             filteredQuestions = [...questions];
             renderQuestionList();
             renderPagination();
-            showStatus('success', '题目加载成功');
+            showStatus('success', '从固定目录加载题目成功，共加载 ' + questions.length + ' 道题目');
         }, 800);
     }
 
@@ -743,6 +818,116 @@ document.addEventListener('DOMContentLoaded', function() {
         tagsContainer.appendChild(tagGroup);
     }
 
+    // 保存题目到固定目录
+    function saveQuestionsToFixedDirectory() {
+        showStatus('loading', '正在保存题目到固定目录...');
+        
+        // 按等级和题型分类题目
+        const questionsByLevelAndType = {};
+        
+        questions.forEach(question => {
+            const level = `level_${question.level}`;
+            const type = question.type;
+            
+            if (!questionsByLevelAndType[level]) {
+                questionsByLevelAndType[level] = {};
+            }
+            
+            if (!questionsByLevelAndType[level][type]) {
+                questionsByLevelAndType[level][type] = [];
+            }
+            
+            questionsByLevelAndType[level][type].push(question);
+        });
+        
+        try {
+            // 实际保存到小程序的固定题目目录
+            const fs = require('fs');
+            const path = require('path');
+            const baseDir = path.join(__dirname, '../gesp-miniprogram/data/questions');
+            
+            // 确保基础目录存在
+            if (!fs.existsSync(baseDir)) {
+                fs.mkdirSync(baseDir, { recursive: true });
+            }
+            
+            // 遍历等级和题型保存题目
+            Object.keys(questionsByLevelAndType).forEach(level => {
+                const levelDir = path.join(baseDir, level);
+                
+                // 确保等级目录存在
+                if (!fs.existsSync(levelDir)) {
+                    fs.mkdirSync(levelDir, { recursive: true });
+                }
+                
+                Object.keys(questionsByLevelAndType[level]).forEach(type => {
+                    const typeDir = path.join(levelDir, type);
+                    
+                    // 确保题型目录存在
+                    if (!fs.existsSync(typeDir)) {
+                        fs.mkdirSync(typeDir, { recursive: true });
+                    }
+                    
+                    // 保存每个题目到单独的文件
+                    questionsByLevelAndType[level][type].forEach(question => {
+                        const filePath = path.join(typeDir, `${question.id}.json`);
+                        fs.writeFileSync(filePath, JSON.stringify(question, null, 2), 'utf-8');
+                    });
+                });
+            });
+            
+            // 保存到本地存储作为缓存
+            localStorage.setItem('questions', JSON.stringify(questions));
+            
+            showStatus('success', '题目已成功保存到固定目录');
+            alert('题目已成功保存到小程序的固定题目目录！');
+        } catch (error) {
+            console.error('保存题目到固定目录失败:', error);
+            showStatus('error', '保存题目到固定目录失败: ' + error.message);
+            alert('保存题目到固定目录失败: ' + error.message);
+        }
+    }
+
+    // 从文件加载题目数据
+    function loadQuestionsFromFile(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                questions = JSON.parse(e.target.result);
+                localStorage.setItem('questions', JSON.stringify(questions));
+                
+                filteredQuestions = [...questions];
+                renderQuestionList();
+                renderPagination();
+                showStatus('success', '题目数据加载成功！共加载 ' + questions.length + ' 道题目');
+            } catch (error) {
+                alert('加载题目数据失败：' + error.message);
+            }
+        };
+        reader.readAsText(file);
+    }
+
+    // 添加导入按钮
+    function initImportExportButtons() {
+        // 创建导入按钮
+        const importBtn = document.createElement('input');
+        importBtn.type = 'file';
+        importBtn.accept = '.json';
+        importBtn.style.display = 'none';
+        importBtn.id = 'import-questions-btn';
+        importBtn.addEventListener('change', loadQuestionsFromFile);
+        document.body.appendChild(importBtn);
+
+        // 获取页面上已有的导出按钮并添加事件监听
+        const exportBtn = document.getElementById('export-questions-btn');
+        if (exportBtn) {
+            exportBtn.addEventListener('click', saveQuestionsToFixedDirectory);
+        }
+    }
+
     // 保存题目
     function saveQuestion(e) {
         e.preventDefault();
@@ -846,8 +1031,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 questions.push(questionData);
             }
 
-            filterQuestions();
+            // 保存到本地存储
+            localStorage.setItem('questions', JSON.stringify(questions));
+
+            // 保存到固定目录
+            saveQuestionsToFixedDirectory();
+
             closeEditor();
+            filterQuestions();
             showStatus('success', '题目保存成功');
         }, 800);
     }
