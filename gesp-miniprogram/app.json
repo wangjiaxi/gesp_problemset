@@ -12,7 +12,7 @@
     "pages/favorites/favorites",
     "pages/history/history",
     "pages/coming-soon/coming-soon",
-    "pages/demo-coming-soon/demo-coming-soon",
+
     "pages/search/search",
     "pages/profile-edit/profile-edit"
   ],

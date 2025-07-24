@@ -1,7 +1,6 @@
 // pages/search/search.js
 const util = require('../../utils/util.js');
-const questionUtils = require('../../utils/questionUtils.js');
-const searchUtils = require('../../utils/searchUtils.js');
+const dataManager = require('../../utils/dataManager.js');
 
 Page({
     /**
@@ -11,7 +10,7 @@ Page({
         searchValue: '',
         searchResults: [],
         searchHistory: [],
-        hotSearches: searchUtils.getHotSearchKeywords().slice(0, 10),
+        hotSearches: ['Python', 'JavaScript', '算法', '数据结构', '编程基础', '循环', '函数', '变量', '数组', '字符串'].slice(0, 10),
         isSearching: false,
         hasSearched: false,
         showHistory: true,
@@ -107,7 +106,7 @@ Page({
         // 模拟搜索延迟
         setTimeout(() => {
             const results = this.searchQuestions(keyword);
-            const stats = searchUtils.getSearchStats(results);
+            const stats = { total: results.length, types: this.getResultTypes(results) };
 
             this.setData({
                 searchResults: results,
@@ -129,20 +128,33 @@ Page({
      */
     searchQuestions: function (keyword) {
         // 验证搜索关键词
-        const validation = searchUtils.validateSearchKeyword(keyword);
-        if (!validation.isValid) {
-            util.showToast(validation.message);
+        if (!keyword || keyword.trim().length < 1) {
+            util.showToast('请输入搜索关键词');
             return [];
         }
 
-        // 获取所有题目数据
-        const allQuestions = this.getAllQuestions();
+        // 使用 dataManager 搜索
+        return dataManager.searchQuestions(keyword.trim());
+    },
 
-        // 使用搜索工具函数进行搜索
-        const results = searchUtils.searchQuestions(allQuestions, keyword);
+    /**
+     * 获取搜索结果统计
+     */
+    getResultTypes: function(results) {
+        const types = {};
+        results.forEach(item => {
+            const type = item.type === 'choice' ? '选择题' : '判断题';
+            types[type] = (types[type] || 0) + 1;
+        });
+        return types;
+    },
 
-        // 按相关性排序
-        return searchUtils.sortByRelevance(results, keyword);
+    /**
+     * 格式化搜索历史
+     */
+    formatSearchHistory: function(history, keyword, maxLength) {
+        const newHistory = [keyword, ...history.filter(item => item !== keyword)];
+        return newHistory.slice(0, maxLength);
     },
 
     /**
@@ -154,7 +166,7 @@ Page({
         // 遍历所有等级和类型，获取题目
         for (let level = 1; level <= 8; level++) {
             ['choice', 'judge'].forEach(type => {
-                const questions = questionUtils.getMockQuestions(level, type);
+                const questions = dataManager.getQuestionsByLevelAndType(level, type);
                 allQuestions = allQuestions.concat(questions);
             });
         }
@@ -255,7 +267,7 @@ Page({
      * 保存搜索历史
      */
     saveSearchHistory: function (keyword) {
-        const newHistory = searchUtils.formatSearchHistory(this.data.searchHistory, keyword, 10);
+        const newHistory = this.formatSearchHistory(this.data.searchHistory, keyword, 10);
 
         // 保存到本地存储
         util.setStorage('searchHistory', newHistory);

@@ -4,13 +4,13 @@
   <view class="banner-container" wx:if="{{banners && banners.length > 0}}">
     <swiper 
       class="banner-swiper" 
-      indicator-dots="{{banners.length > 1}}"
+      indicator-dots="{{carouselIndicatorDots && banners.length > 1}}"
       autoplay="{{true}}" 
-      interval="{{3000}}" 
-      duration="{{500}}"
-      circular="{{true}}"
-      indicator-color="rgba(255, 255, 255, 0.6)"
-      indicator-active-color="#FFFFFF"
+      interval="{{carouselInterval}}" 
+      duration="{{carouselDuration}}"
+      circular="{{carouselCircular}}"
+      indicator-color="{{carouselIndicatorColor}}"
+      indicator-active-color="{{carouselIndicatorActiveColor}}"
     >
       <block wx:for="{{banners}}" wx:key="id">
         <swiper-item bindtap="onBannerTap" data-url="{{item.url}}">

@@ -1,21 +1,31 @@
 // app.js
 App({
   onLaunch: function () {
-    // 初始化云开发环境
-    if (wx.cloud) {
-      wx.cloud.init({
-        env: 'gesp-exam-miniprogram-env', // 云开发环境ID
-        traceUser: true // 是否记录用户访问记录
-      });
-    } else {
-      console.error('请使用 2.2.3 或以上的基础库以使用云能力');
-    }
+    console.log('GESP刷题小程序启动');
+
+    // 初始化本地数据
+    this.initLocalData();
 
     // 获取用户信息
     this.getWxUserInfo();
 
     // 检查更新
     this.checkUpdate();
+  },
+
+  // 初始化本地数据
+  initLocalData: function () {
+    // 初始化本地存储的用户数据
+    const userData = wx.getStorageSync('userData') || {
+      favoriteQuestions: [],
+      answerHistory: [],
+      userStats: {
+        totalAnswered: 0,
+        correctAnswered: 0,
+        accuracy: 0
+      }
+    };
+    this.globalData.userData = userData;
   },
 
   // 获取微信用户信息
@@ -27,7 +37,7 @@ App({
           wx.getUserInfo({
             success: res => {
               this.globalData.userInfo = res.userInfo;
-              
+
               // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
               // 所以此处加入 callback 以防止这种情况
               if (this.userInfoReadyCallback) {

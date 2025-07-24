@@ -39,6 +39,7 @@ Page({
    * 生成时间选项（2023年3月到2025年6月）
    */
   generateTimeOptions: function () {
+    const dataManager = require('../../utils/dataManager.js');
     const timeOptions = [];
     const startYear = 2023;
     const startMonth = 3;
@@ -52,16 +53,36 @@ Page({
       for (let month = monthStart; month <= monthEnd; month++) {
         // 只包含3月、6月、9月、12月（GESP考试月份）
         if ([3, 6, 9, 12].includes(month)) {
-          // 根据题型设置题目数量：选择题15题，判断题10题
-          const count = this.data.typeId === 'choice' ? 15 : 10;
-          timeOptions.push({
-            id: `${year}_${month.toString().padStart(2, '0')}`,
-            year: year,
-            month: month,
-            displayText: `${year}年${month}月`,
-            count: count
-          });
+          // 获取实际题目数量
+          const questions = dataManager.getQuestionsByLevelAndType(parseInt(this.data.levelId), this.data.typeId);
+          const questionsForTime = questions.filter(q => q.year === year && q.month === month);
+          const count = questionsForTime.length;
+          
+          // 只显示有题目的时间选项
+          if (count > 0) {
+            timeOptions.push({
+              id: `${year}_${month.toString().padStart(2, '0')}`,
+              year: year,
+              month: month,
+              displayText: `${year}年${month}月`,
+              count: count
+            });
+          }
         }
+      }
+    }
+
+    // 如果没有按时间分类的题目，显示所有题目作为一个选项
+    if (timeOptions.length === 0) {
+      const allQuestions = dataManager.getQuestionsByLevelAndType(parseInt(this.data.levelId), this.data.typeId);
+      if (allQuestions.length > 0) {
+        timeOptions.push({
+          id: 'all',
+          year: 0,
+          month: 0,
+          displayText: '全部题目',
+          count: allQuestions.length
+        });
       }
     }
 

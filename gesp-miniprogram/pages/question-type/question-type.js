@@ -1,7 +1,7 @@
 // pages/question-type/question-type.js
 const app = getApp();
 const util = require('../../utils/util.js');
-const questionUtils = require('../../utils/questionUtils.js');
+const dataManager = require('../../utils/dataManager.js');
 
 Page({
   /**
@@ -104,17 +104,37 @@ Page({
    */
   updateQuestionTypesWithCount: function() {
     const level = parseInt(this.data.levelId);
-    const updatedTypes = this.data.questionTypes.map(type => {
-      const questions = questionUtils.getMockQuestions(level, type.id);
-      return {
-        ...type,
-        questionCount: questions.length,
-        hasQuestions: questions.length > 0
-      };
-    });
+    const updatedTypes = [...this.data.questionTypes];
 
-    this.setData({
-      questionTypes: updatedTypes
+    updatedTypes.forEach(async (type, index) => {
+      try {
+        // 获取实际题目数据
+        const questions = dataManager.getQuestionsByLevelAndType(level, type.id);
+        const hasQuestions = questions.length > 0;
+
+        updatedTypes[index] = {
+          ...type,
+          questionCount: questions.length,
+          hasQuestions: hasQuestions
+        };
+
+        this.setData({
+          questionTypes: updatedTypes
+        });
+      } catch (error) {
+        console.error('更新题型数据失败:', error);
+        // 出错时获取题目数据
+        const questions = dataManager.getQuestionsByLevelAndType(level, type.id);
+        updatedTypes[index] = {
+          ...type,
+          questionCount: questions.length,
+          hasQuestions: questions.length > 0
+        };
+
+        this.setData({
+          questionTypes: updatedTypes
+        });
+      }
     });
   },
 
@@ -127,19 +147,29 @@ Page({
     const typeName = dataset.name;
     const level = parseInt(this.data.levelId);
     
-    // 检查该分类下是否有题目
-    const questions = questionUtils.getMockQuestions(level, typeId);
+    // 显示加载中提示
+    wx.showLoading({
+      title: '正在检查题目...',
+    });
     
-    if (questions.length > 0) {
-      // 有题目，跳转到时间选择页面
-      wx.navigateTo({
-        url: `/pages/question-time/question-time?levelId=${this.data.levelId}&levelName=${encodeURIComponent(this.data.levelName)}&typeId=${typeId}&typeName=${encodeURIComponent(typeName)}`
-      });
-    } else {
-      // 没有题目，跳转到敬请期待页面
-      wx.navigateTo({
-        url: `/pages/coming-soon/coming-soon?level=${level}&type=${typeId}`
-      });
-    }
+    // 检查该分类下是否有题目
+    const questions = dataManager.getQuestionsByLevelAndType(level, typeId);
+    const hasQuestions = questions.length > 0;
+    
+    setTimeout(() => {
+      wx.hideLoading();
+      
+      if (hasQuestions) {
+        // 有题目，跳转到时间选择页面
+        wx.navigateTo({
+          url: `/pages/question-time/question-time?levelId=${this.data.levelId}&levelName=${encodeURIComponent(this.data.levelName)}&typeId=${typeId}&typeName=${encodeURIComponent(typeName)}`
+        });
+      } else {
+        // 没有题目，跳转到敬请期待页面
+        wx.navigateTo({
+          url: `/pages/coming-soon/coming-soon?level=${level}&type=${typeId}`
+        });
+      }
+    }, 500);
   }
 });

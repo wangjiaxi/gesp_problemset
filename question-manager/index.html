@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GESP刷题管理后台</title>
     <link rel="stylesheet" href="style.css">
+    <script src="fileManager.js"></script>
 </head>
 <body>
     <header>
@@ -36,10 +37,19 @@
                     <option value="judge">判断题</option>
                 </select>
             </div>
-            <button id="refresh-btn">刷新列表</button>
-            <button id="new-question-btn">新建题目</button>
-            <button id="export-questions-btn" class="action-btn">导出题目</button>
-            <button id="carousel-manager-btn">轮播图管理</button>
+            <div class="button-group">
+                <button id="load-file-btn" class="primary-btn">加载数据文件</button>
+                <button id="refresh-btn">刷新列表</button>
+                <button id="new-question-btn">新建题目</button>
+            </div>
+            <div class="button-group">
+                <button id="export-js-btn" class="action-btn">导出JS文件</button>
+                <button id="export-json-btn" class="action-btn">导出JSON备份</button>
+                <button id="import-json-btn" class="action-btn">导入JSON备份</button>
+            </div>
+            <div class="carousel-button-group">
+                <button id="carousel-manager-btn">轮播图管理</button>
+            </div>
         </div>
         <div class="content">
             <div class="question-list-header">
