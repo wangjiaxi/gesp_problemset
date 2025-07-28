@@ -1,0 +1,44 @@
+{
+  "examInfo": {
+    "year": 2025,
+    "month": 6,
+    "language": "C++",
+    "level": 1,
+    "examDate": "2025-06-15",
+    "duration": 60,
+    "totalQuestions": 15,
+    "passingScore": 60
+  },
+  "questions": [
+    {
+      "id": "202506C1_01",
+      "type": "choice",
+      "question": "11111",
+      "options": [
+        {
+          "key": "A",
+          "value": "a"
+        },
+        {
+          "key": "B",
+          "value": "b"
+        },
+        {
+          "key": "C",
+          "value": "c"
+        },
+        {
+          "key": "D",
+          "value": "d"
+        }
+      ],
+      "answer": "A",
+      "explanation": "aaa",
+      "difficulty": 1,
+      "tags": [
+        "a"
+      ],
+      "points": 2
+    }
+  ]
+}

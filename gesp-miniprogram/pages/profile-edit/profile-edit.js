@@ -42,42 +42,30 @@ Page({
   },
 
   /**
+   * 选择头像（微信官方方法）
+   */
+  onChooseAvatar: function(e) {
+    const { avatarUrl } = e.detail;
+    const newUserInfo = {
+      ...this.data.userInfo,
+      avatarUrl: avatarUrl
+    };
+    
+    this.updateUserInfo(newUserInfo);
+    util.showToast('头像更新成功', 'success');
+  },
+
+  /**
    * 点击头像
    */
   onAvatarTap: function() {
     wx.showActionSheet({
-      itemList: ['使用微信头像', '从相册选择'],
+      itemList: ['从相册选择'],
       success: (res) => {
         if (res.tapIndex === 0) {
-          // 使用微信头像
-          this.useWechatAvatar();
-        } else if (res.tapIndex === 1) {
           // 从相册选择
           this.chooseFromAlbum();
         }
-      }
-    });
-  },
-
-  /**
-   * 使用微信头像
-   */
-  useWechatAvatar: function() {
-    // 获取微信用户信息
-    wx.getUserProfile({
-      desc: '用于完善用户资料',
-      success: (res) => {
-        const newUserInfo = {
-          ...this.data.userInfo,
-          avatarUrl: res.userInfo.avatarUrl
-        };
-        
-        this.updateUserInfo(newUserInfo);
-        util.showToast('头像更新成功', 'success');
-      },
-      fail: (err) => {
-        console.error('获取微信头像失败:', err);
-        util.showToast('获取微信头像失败');
       }
     });
   },
@@ -114,78 +102,35 @@ Page({
   },
 
   /**
+   * 昵称输入完成（微信官方方法）
+   */
+  onNicknameChange: function(e) {
+    const nickName = e.detail.value.trim();
+    
+    if (nickName.length === 0) {
+      util.showToast('昵称不能为空');
+      return;
+    }
+    
+    if (nickName.length > 20) {
+      util.showToast('昵称不能超过20个字符');
+      return;
+    }
+    
+    const newUserInfo = {
+      ...this.data.userInfo,
+      nickName: nickName
+    };
+    
+    this.updateUserInfo(newUserInfo);
+    util.showToast('昵称更新成功', 'success');
+  },
+
+  /**
    * 点击昵称
    */
   onNickNameTap: function() {
-    wx.showActionSheet({
-      itemList: ['使用微信昵称', '自定义输入'],
-      success: (res) => {
-        if (res.tapIndex === 0) {
-          // 使用微信昵称
-          this.useWechatNickName();
-        } else if (res.tapIndex === 1) {
-          // 自定义输入
-          this.inputCustomNickName();
-        }
-      }
-    });
-  },
-
-  /**
-   * 使用微信昵称
-   */
-  useWechatNickName: function() {
-    wx.getUserProfile({
-      desc: '用于完善用户资料',
-      success: (res) => {
-        const newUserInfo = {
-          ...this.data.userInfo,
-          nickName: res.userInfo.nickName
-        };
-        
-        this.updateUserInfo(newUserInfo);
-        util.showToast('昵称更新成功', 'success');
-      },
-      fail: (err) => {
-        console.error('获取微信昵称失败:', err);
-        util.showToast('获取微信昵称失败');
-      }
-    });
-  },
-
-  /**
-   * 自定义输入昵称
-   */
-  inputCustomNickName: function() {
-    wx.showModal({
-      title: '设置昵称',
-      placeholderText: '请输入昵称',
-      editable: true,
-      content: this.data.userInfo.nickName === '未设置昵称' ? '' : this.data.userInfo.nickName,
-      success: (res) => {
-        if (res.confirm && res.content) {
-          const nickName = res.content.trim();
-          
-          if (nickName.length === 0) {
-            util.showToast('昵称不能为空');
-            return;
-          }
-          
-          if (nickName.length > 20) {
-            util.showToast('昵称不能超过20个字符');
-            return;
-          }
-          
-          const newUserInfo = {
-            ...this.data.userInfo,
-            nickName: nickName
-          };
-          
-          this.updateUserInfo(newUserInfo);
-          util.showToast('昵称更新成功', 'success');
-        }
-      }
-    });
+    // 现在通过input组件直接编辑，不需要弹窗
   },
 
   /**

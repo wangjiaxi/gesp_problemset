@@ -1,0 +1,68 @@
+<!--pages/practice-result/practice-result.wxml-->
+<view class="container">
+  <!-- 结果头部 -->
+  <view class="result-header">
+    <view class="session-info">
+      <view class="session-name">{{sessionName}}</view>
+      <view class="level-type">{{levelName}} - {{typeName}}</view>
+    </view>
+    
+    <view class="score-container">
+      <view class="score-main">
+        <text class="score-number">{{score}}</text>
+        <text class="score-total">/{{maxScore}}</text>
+      </view>
+      <view class="score-subtitle">本次得分</view>
+    </view>
+    
+    <view class="stats-container">
+      <view class="stat-item">
+        <view class="stat-number">{{correctCount}}</view>
+        <view class="stat-label">答对</view>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <view class="stat-number">{{totalCount - correctCount}}</view>
+        <view class="stat-label">答错</view>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <view class="stat-number">{{totalCount}}</view>
+        <view class="stat-label">总题数</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 答题结果网格 -->
+  <view class="result-grid-container">
+    <view class="grid-title">答题详情</view>
+    <view class="result-grid">
+      <view 
+        class="result-circle {{item.isCorrect ? 'correct' : 'incorrect'}}"
+        wx:for="{{resultGrid}}" 
+        wx:key="index"
+        bindtap="onResultTap"
+        data-index="{{item.index}}"
+      >
+        {{item.questionIndex + 1}}
+      </view>
+    </view>
+    <view class="grid-legend">
+      <view class="legend-item">
+        <view class="legend-circle correct"></view>
+        <text class="legend-text">答对</text>
+      </view>
+      <view class="legend-item">
+        <view class="legend-circle incorrect"></view>
+        <text class="legend-text">答错</text>
+      </view>
+      <text class="legend-tip">点击圆圈查看题目详情</text>
+    </view>
+  </view>
+
+  <!-- 底部操作 -->
+  <view class="bottom-actions">
+    <button class="action-btn retry-btn" bindtap="onRetry">重新练习</button>
+    <button class="action-btn back-btn" bindtap="onBackToTypes">返回题型</button>
+  </view>
+</view>

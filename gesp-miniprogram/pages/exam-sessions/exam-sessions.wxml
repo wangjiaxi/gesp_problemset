@@ -1,0 +1,47 @@
+<!--pages/exam-sessions/exam-sessions.wxml-->
+<view class="container">
+  <!-- 页面头部 -->
+  <view class="page-header">
+    <view class="header-content">
+      <view class="level-badge">{{levelName}}</view>
+      <view class="page-title">选择考试场次</view>
+      <view class="page-subtitle">请选择您要练习的考试场次</view>
+    </view>
+  </view>
+
+  <!-- 考试场次列表 -->
+  <view class="sessions-container">
+    <view 
+      class="session-item" 
+      wx:for="{{examSessions}}" 
+      wx:key="id"
+      bindtap="onSessionTap"
+      data-session="{{item}}"
+    >
+      <view class="session-main">
+        <view class="session-info">
+          <view class="session-name">{{item.displayName}}</view>
+          <view class="session-date">考试日期：{{item.date}}</view>
+          <view class="session-languages">
+            <text class="language-tag">C++</text>
+          </view>
+        </view>
+        
+        <view class="session-status">
+          <view class="status-badge" style="background-color: {{item.status === 'completed' ? '#52C41A' : item.status === 'ongoing' ? '#1890FF' : '#FAAD14'}}">
+            {{item.status === 'completed' ? '已结束' : item.status === 'ongoing' ? '进行中' : '即将开始'}}
+          </view>
+        </view>
+      </view>
+      
+      <view class="session-arrow">
+        <text class="arrow-icon">></text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部提示 -->
+  <view class="bottom-tip">
+    <text class="tip-text">💡 选择考试场次后进入C++题目练习</text>
+  </view>
+</view>

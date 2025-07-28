@@ -1,0 +1,101 @@
+{
+  "examInfo": {
+    "year": 2023,
+    "month": 3,
+    "language": "C++",
+    "level": 2,
+    "examDate": "2023-03-18",
+    "duration": 75,
+    "totalQuestions": 15,
+    "passingScore": 60
+  },
+  
+  "questions": [
+    {
+      "id": "202303C2_01",
+      "type": "choice",
+      "question": "以下哪种排序算法的平均时间复杂度是O(n²)？",
+      "options": [
+        { "key": "A", "value": "快速排序" },
+        { "key": "B", "value": "归并排序" },
+        { "key": "C", "value": "冒泡排序" },
+        { "key": "D", "value": "堆排序" }
+      ],
+      "answer": "C",
+      "explanation": "冒泡排序的平均和最坏时间复杂度都是O(n²)，而快速排序平均是O(n log n)。",
+      "difficulty": 2,
+      "tags": ["排序算法", "时间复杂度"],
+      "points": 5
+    },
+    
+    {
+      "id": "202303C2_02",
+      "type": "judge",
+      "question": "数组的下标从0开始。",
+      "options": [],
+      "answer": "true",
+      "explanation": "在C++中，数组的下标从0开始，第一个元素的下标是0。",
+      "difficulty": 1,
+      "tags": ["数组", "下标"],
+      "points": 4
+    },
+    
+    {
+      "id": "202303C2_03",
+      "type": "choice",
+      "question": "以下哪个是正确的for循环语法？",
+      "options": [
+        { "key": "A", "value": "for(int i=0; i<10; i++)" },
+        { "key": "B", "value": "for(int i=0, i<10, i++)" },
+        { "key": "C", "value": "for(int i=0: i<10: i++)" },
+        { "key": "D", "value": "for(int i=0 to 10)" }
+      ],
+      "answer": "A",
+      "explanation": "C++中for循环的正确语法是for(初始化; 条件; 更新)，各部分用分号分隔。",
+      "difficulty": 2,
+      "tags": ["循环结构", "for循环"],
+      "points": 5
+    },
+    
+    {
+      "id": "202303C2_04",
+      "type": "judge",
+      "question": "函数可以返回多个值。",
+      "options": [],
+      "answer": "false",
+      "explanation": "C++函数只能返回一个值，如需返回多个值可以使用指针、引用或结构体。",
+      "difficulty": 2,
+      "tags": ["函数", "返回值"],
+      "points": 5
+    },
+    
+    {
+      "id": "202303C2_05",
+      "type": "choice",
+      "question": "以下哪个关键字用于定义常量？",
+      "options": [
+        { "key": "A", "value": "var" },
+        { "key": "B", "value": "const" },
+        { "key": "C", "value": "final" },
+        { "key": "D", "value": "static" }
+      ],
+      "answer": "B",
+      "explanation": "const关键字用于定义常量，一旦初始化后不能修改其值。",
+      "difficulty": 2,
+      "tags": ["常量", "关键字"],
+      "points": 5
+    },
+    
+    {
+      "id": "202303C2_06",
+      "type": "judge",
+      "question": "C++中的指针可以进行算术运算。",
+      "options": [],
+      "answer": "true",
+      "explanation": "C++中的指针支持算术运算，如加法、减法等，用于访问数组元素或内存地址。",
+      "difficulty": 2,
+      "tags": ["指针", "算术运算"],
+      "points": 5
+    }
+  ]
+}

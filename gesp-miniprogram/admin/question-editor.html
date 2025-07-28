@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GESP题目编辑器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4169E1 0%, #6A5ACD 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 20px;
+        }
+
+        .sidebar {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            height: fit-content;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .content {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #4169E1;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background-color: #4169E1;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #3557C7;
+        }
+
+        .btn-success {
+            background-color: #52C41A;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #45A617;
+        }
+
+        .btn-danger {
+            background-color: #FF4D4F;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #E63946;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .options-container {
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+
+        .option-key {
+            width: 40px;
+            text-align: center;
+            font-weight: bold;
+            color: #4169E1;
+        }
+
+        .option-input {
+            flex: 1;
+        }
+
+        .questions-list {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            padding: 10px;
+        }
+
+        .question-item {
+            padding: 10px;
+            border: 1px solid #e1e5e9;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .question-item:hover {
+            background-color: #f8f9fa;
+            border-color: #4169E1;
+        }
+
+        .question-item.active {
+            background-color: #e3f2fd;
+            border-color: #4169E1;
+        }
+
+        .question-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .question-meta {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .file-info {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .file-info h3 {
+            color: #4169E1;
+            margin-bottom: 10px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .alert {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 GESP题目编辑器</h1>
+            <p>轻松管理和编辑GESP考试题目</p>
+        </div>
+
+        <div class="main-content">
+            <!-- 侧边栏 -->
+            <div class="sidebar">
+                <div class="form-group">
+                    <label>选择考试场次</label>
+                    <div class="form-row">
+                        <select id="examYear">
+                            <option value="2023">2023年</option>
+                            <option value="2024">2024年</option>
+                            <option value="2025">2025年</option>
+                        </select>
+                        <select id="examMonth">
+                            <option value="03">3月</option>
+                            <option value="06">6月</option>
+                            <option value="09">9月</option>
+                            <option value="12">12月</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>等级</label>
+                    <select id="examLevel">
+                        <option value="1">一级</option>
+                        <option value="2">二级</option>
+                        <option value="3">三级</option>
+                        <option value="4">四级</option>
+                        <option value="5">五级</option>
+                        <option value="6">六级</option>
+                        <option value="7">七级</option>
+                        <option value="8">八级</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-primary" onclick="loadExamFile()" style="width: 100%; margin-bottom: 20px;">
+                    📂 加载考试文件
+                </button>
+
+                <div id="fileInfo" class="file-info hidden">
+                    <h3>当前文件</h3>
+                    <p id="fileName"></p>
+                    <p id="questionCount"></p>
+                </div>
+
+                <div class="form-group">
+                    <label>题目列表</label>
+                    <div id="questionsList" class="questions-list">
+                        <p style="text-align: center; color: #666; padding: 20px;">请先加载考试文件</p>
+                    </div>
+                </div>
+
+                <button class="btn btn-success" onclick="addNewQuestion()" style="width: 100%; margin-bottom: 10px;">
+                    ➕ 添加新题目
+                </button>
+            </div>
+
+            <!-- 主内容区 -->
+            <div class="content">
+                <div id="alertContainer"></div>
+
+                <form id="questionForm">
+                    <div class="form-group">
+                        <label>题目ID</label>
+                        <input type="text" id="questionId" placeholder="如: 202303C1_01" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>题目类型</label>
+                            <select id="questionType" onchange="toggleOptions()">
+                                <option value="choice">选择题</option>
+                                <option value="judge">判断题</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>难度等级</label>
+                            <select id="questionDifficulty">
+                                <option value="1">简单</option>
+                                <option value="2">中等</option>
+                                <option value="3">困难</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>题目内容</label>
+                        <textarea id="questionContent" placeholder="请输入题目内容..." required></textarea>
+                    </div>
+
+                    <div id="optionsContainer" class="form-group">
+                        <label>选项设置</label>
+                        <div class="options-container">
+                            <div class="option-item">
+                                <span class="option-key">A</span>
+                                <input type="text" class="option-input" id="optionA" placeholder="选项A内容">
+                            </div>
+                            <div class="option-item">
+                                <span class="option-key">B</span>
+                                <input type="text" class="option-input" id="optionB" placeholder="选项B内容">
+                            </div>
+                            <div class="option-item">
+                                <span class="option-key">C</span>
+                                <input type="text" class="option-input" id="optionC" placeholder="选项C内容">
+                            </div>
+                            <div class="option-item">
+                                <span class="option-key">D</span>
+                                <input type="text" class="option-input" id="optionD" placeholder="选项D内容">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>正确答案</label>
+                        <select id="questionAnswer">
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>答案解析</label>
+                        <textarea id="questionExplanation" placeholder="请输入答案解析..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>标签 (用逗号分隔)</label>
+                        <input type="text" id="questionTags" placeholder="如: 变量声明, 基础语法">
+                    </div>
+
+                    <div class="actions">
+                        <button type="button" class="btn btn-success" onclick="saveQuestion()">
+                            💾 保存题目
+                        </button>
+                        <button type="button" class="btn btn-danger" onclick="deleteQuestion()">
+                            🗑️ 删除题目
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="clearForm()">
+                            🔄 清空表单
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="exportJSON()">
+                            📥 导出JSON
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentExamData = null;
+        let currentQuestionIndex = -1;
+
+        // 切换选项显示
+        function toggleOptions() {
+            const type = document.getElementById('questionType').value;
+            const optionsContainer = document.getElementById('optionsContainer');
+            const answerSelect = document.getElementById('questionAnswer');
+            
+            if (type === 'choice') {
+                optionsContainer.style.display = 'block';
+                answerSelect.innerHTML = `
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                    <option value="D">D</option>
+                `;
+            } else {
+                optionsContainer.style.display = 'none';
+                answerSelect.innerHTML = `
+                    <option value="true">正确</option>
+                    <option value="false">错误</option>
+                `;
+            }
+        }
+
+        // 显示提示信息
+        function showAlert(message, type = 'success') {
+            const alertContainer = document.getElementById('alertContainer');
+            const alertClass = type === 'success' ? 'alert-success' : 'alert-error';
+            
+            alertContainer.innerHTML = `
+                <div class="alert ${alertClass}">
+                    ${message}
+                </div>
+            `;
+            
+            setTimeout(() => {
+                alertContainer.innerHTML = '';
+            }, 3000);
+        }
+
+        // 加载考试文件
+        function loadExamFile() {
+            const year = document.getElementById('examYear').value;
+            const month = document.getElementById('examMonth').value;
+            const level = document.getElementById('examLevel').value;
+            
+            const fileName = `${year}${month}C${level}.json`;
+            
+            // 创建默认的考试数据结构
+            currentExamData = {
+                examInfo: {
+                    year: parseInt(year),
+                    month: parseInt(month),
+                    language: "C++",
+                    level: parseInt(level),
+                    examDate: `${year}-${month}-15`,
+                    duration: level <= 2 ? 60 : 75,
+                    totalQuestions: 15,
+                    passingScore: 60
+                },
+                questions: []
+            };
+            
+            // 更新文件信息
+            document.getElementById('fileName').textContent = fileName;
+            document.getElementById('questionCount').textContent = `题目数量: ${currentExamData.questions.length}`;
+            document.getElementById('fileInfo').classList.remove('hidden');
+            
+            // 更新题目列表
+            updateQuestionsList();
+            
+            showAlert(`已创建/加载文件: ${fileName}`);
+        }
+
+        // 更新题目列表
+        function updateQuestionsList() {
+            const questionsList = document.getElementById('questionsList');
+            
+            if (!currentExamData || currentExamData.questions.length === 0) {
+                questionsList.innerHTML = '<p style="text-align: center; color: #666; padding: 20px;">暂无题目</p>';
+                return;
+            }
+            
+            let html = '';
+            currentExamData.questions.forEach((question, index) => {
+                const isActive = index === currentQuestionIndex ? 'active' : '';
+                html += `
+                    <div class="question-item ${isActive}" onclick="selectQuestion(${index})">
+                        <div class="question-title">${question.id}</div>
+                        <div class="question-meta">
+                            ${question.type === 'choice' ? '选择题' : '判断题'} | 
+                            难度: ${question.difficulty} | 
+                            ${question.question.substring(0, 30)}...
+                        </div>
+                    </div>
+                `;
+            });
+            
+            questionsList.innerHTML = html;
+            
+            // 更新题目数量
+            document.getElementById('questionCount').textContent = `题目数量: ${currentExamData.questions.length}`;
+        }
+
+        // 选择题目
+        function selectQuestion(index) {
+            currentQuestionIndex = index;
+            const question = currentExamData.questions[index];
+            
+            // 填充表单
+            document.getElementById('questionId').value = question.id;
+            document.getElementById('questionType').value = question.type;
+            document.getElementById('questionDifficulty').value = question.difficulty;
+            document.getElementById('questionContent').value = question.question;
+            document.getElementById('questionAnswer').value = question.answer;
+            document.getElementById('questionExplanation').value = question.explanation;
+            document.getElementById('questionTags').value = question.tags.join(', ');
+            
+            // 填充选项
+            if (question.type === 'choice' && question.options) {
+                question.options.forEach(option => {
+                    const input = document.getElementById(`option${option.key}`);
+                    if (input) input.value = option.value;
+                });
+            }
+            
+            toggleOptions();
+            updateQuestionsList();
+        }
+
+        // 添加新题目
+        function addNewQuestion() {
+            if (!currentExamData) {
+                showAlert('请先加载考试文件', 'error');
+                return;
+            }
+            
+            currentQuestionIndex = -1;
+            clearForm();
+            
+            // 自动生成题目ID
+            const year = currentExamData.examInfo.year;
+            const month = currentExamData.examInfo.month.toString().padStart(2, '0');
+            const level = currentExamData.examInfo.level;
+            const questionNum = (currentExamData.questions.length + 1).toString().padStart(2, '0');
+            
+            document.getElementById('questionId').value = `${year}${month}C${level}_${questionNum}`;
+        }
+
+        // 保存题目
+        function saveQuestion() {
+            if (!currentExamData) {
+                showAlert('请先加载考试文件', 'error');
+                return;
+            }
+            
+            const questionData = {
+                id: document.getElementById('questionId').value,
+                type: document.getElementById('questionType').value,
+                question: document.getElementById('questionContent').value,
+                options: [],
+                answer: document.getElementById('questionAnswer').value,
+                explanation: document.getElementById('questionExplanation').value,
+                difficulty: parseInt(document.getElementById('questionDifficulty').value),
+                tags: document.getElementById('questionTags').value.split(',').map(tag => tag.trim()).filter(tag => tag),
+                points: 2
+            };
+            
+            // 验证必填字段
+            if (!questionData.id || !questionData.question || !questionData.answer || !questionData.explanation) {
+                showAlert('请填写所有必填字段', 'error');
+                return;
+            }
+            
+            // 处理选项
+            if (questionData.type === 'choice') {
+                const options = ['A', 'B', 'C', 'D'];
+                options.forEach(key => {
+                    const value = document.getElementById(`option${key}`).value;
+                    if (value) {
+                        questionData.options.push({ key, value });
+                    }
+                });
+                
+                if (questionData.options.length < 2) {
+                    showAlert('选择题至少需要2个选项', 'error');
+                    return;
+                }
+            }
+            
+            // 保存或更新题目
+            if (currentQuestionIndex >= 0) {
+                currentExamData.questions[currentQuestionIndex] = questionData;
+                showAlert('题目更新成功');
+            } else {
+                currentExamData.questions.push(questionData);
+                showAlert('题目添加成功');
+            }
+            
+            updateQuestionsList();
+        }
+
+        // 删除题目
+        function deleteQuestion() {
+            if (currentQuestionIndex < 0) {
+                showAlert('请先选择要删除的题目', 'error');
+                return;
+            }
+            
+            if (confirm('确定要删除这道题目吗？')) {
+                currentExamData.questions.splice(currentQuestionIndex, 1);
+                currentQuestionIndex = -1;
+                clearForm();
+                updateQuestionsList();
+                showAlert('题目删除成功');
+            }
+        }
+
+        // 清空表单
+        function clearForm() {
+            document.getElementById('questionForm').reset();
+            currentQuestionIndex = -1;
+            toggleOptions();
+            updateQuestionsList();
+        }
+
+        // 导出JSON
+        function exportJSON() {
+            if (!currentExamData) {
+                showAlert('请先加载考试文件', 'error');
+                return;
+            }
+            
+            const year = document.getElementById('examYear').value;
+            const month = document.getElementById('examMonth').value;
+            const level = document.getElementById('examLevel').value;
+            const fileName = `${year}${month}C${level}.json`;
+            
+            const jsonString = JSON.stringify(currentExamData, null, 2);
+            
+            // 创建下载链接
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showAlert(`JSON文件已导出: ${fileName}`);
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            toggleOptions();
+        });
+    </script>
+</body>
+</html>

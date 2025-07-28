@@ -1,0 +1,224 @@
+/* pages/practice/practice.wxss */
+.container {
+  background-color: #F8F8F8;
+  min-height: 100vh;
+  padding-bottom: 120rpx;
+}
+
+/* 进度条 */
+.progress-container {
+  background-color: #FFFFFF;
+  padding: 20rpx 30rpx;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
+}
+
+.progress-bar {
+  flex: 1;
+  height: 8rpx;
+  background-color: #E8E8E8;
+  border-radius: 4rpx;
+  margin-right: 20rpx;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #4169E1;
+  border-radius: 4rpx;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  font-size: 26rpx;
+  color: #666666;
+  min-width: 80rpx;
+}
+
+/* 题目容器 */
+.question-container {
+  margin: 20rpx;
+  background-color: #FFFFFF;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
+}
+
+.question-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.question-type {
+  background-color: #4169E1;
+  color: #FFFFFF;
+  font-size: 22rpx;
+  padding: 6rpx 16rpx;
+  border-radius: 12rpx;
+}
+
+.question-number {
+  font-size: 26rpx;
+  color: #666666;
+}
+
+.question-content {
+  margin-bottom: 30rpx;
+}
+
+.question-text {
+  font-size: 32rpx;
+  color: #333333;
+  line-height: 1.6;
+  margin-bottom: 20rpx;
+}
+
+.code-block {
+  background-color: #F5F5F5;
+  border-radius: 8rpx;
+  padding: 20rpx;
+  margin-top: 20rpx;
+}
+
+.code-text {
+  font-family: 'Courier New', monospace;
+  font-size: 28rpx;
+  color: #333333;
+  white-space: pre-wrap;
+}
+
+/* 选择题选项 */
+.options-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.option-item {
+  display: flex;
+  align-items: center;
+  padding: 20rpx;
+  border: 2rpx solid #E8E8E8;
+  border-radius: 12rpx;
+  transition: all 0.3s ease;
+}
+
+.option-item.selected {
+  border-color: #4169E1;
+  background-color: #F0F4FF;
+}
+
+.option-item:active {
+  transform: scale(0.98);
+}
+
+.option-key {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  background-color: #E8E8E8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  font-weight: 600;
+  margin-right: 20rpx;
+  color: #666666;
+}
+
+.option-item.selected .option-key {
+  background-color: #4169E1;
+  color: #FFFFFF;
+}
+
+.option-value {
+  flex: 1;
+  font-size: 30rpx;
+  color: #333333;
+  line-height: 1.5;
+}
+
+/* 判断题选项 */
+.judge-container {
+  display: flex;
+  gap: 20rpx;
+}
+
+.judge-option {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30rpx 20rpx;
+  border: 2rpx solid #E8E8E8;
+  border-radius: 12rpx;
+  transition: all 0.3s ease;
+}
+
+.judge-option.selected {
+  border-color: #4169E1;
+  background-color: #F0F4FF;
+}
+
+.judge-option:active {
+  transform: scale(0.98);
+}
+
+.judge-icon {
+  font-size: 48rpx;
+  margin-bottom: 10rpx;
+  color: #666666;
+}
+
+.judge-option.selected .judge-icon {
+  color: #4169E1;
+}
+
+.judge-text {
+  font-size: 28rpx;
+  color: #333333;
+}
+
+/* 底部操作栏 */
+.bottom-actions {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #FFFFFF;
+  padding: 20rpx 30rpx;
+  display: flex;
+  gap: 20rpx;
+  box-shadow: 0 -2rpx 8rpx rgba(0, 0, 0, 0.1);
+}
+
+.action-btn {
+  flex: 1;
+  height: 80rpx;
+  border-radius: 12rpx;
+  font-size: 30rpx;
+  border: none;
+}
+
+.prev-btn {
+  background-color: #F5F5F5;
+  color: #666666;
+}
+
+.prev-btn[disabled] {
+  background-color: #F0F0F0;
+  color: #CCCCCC;
+}
+
+.next-btn {
+  background-color: #4169E1;
+  color: #FFFFFF;
+}
+
+.submit-btn {
+  background-color: #52C41A;
+  color: #FFFFFF;
+}

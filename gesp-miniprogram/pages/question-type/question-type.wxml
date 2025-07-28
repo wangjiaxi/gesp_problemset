@@ -22,10 +22,6 @@
       <view class="type-info">
         <view class="type-name">{{item.name}}</view>
         <view class="type-desc">{{item.description}}</view>
-        <view class="type-count">
-          <text wx:if="{{item.hasQuestions}}" class="count-text">{{item.questionCount}}道题目</text>
-          <text wx:else class="coming-soon-text">敬请期待</text>
-        </view>
       </view>
       <view class="type-arrow">
         <text class="arrow">></text>

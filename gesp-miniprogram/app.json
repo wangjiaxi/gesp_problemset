@@ -3,7 +3,10 @@
     "pages/index/index",
     "pages/test/test",
     "pages/profile/profile",
+    "pages/exam-sessions/exam-sessions",
     "pages/question-type/question-type",
+    "pages/practice/practice",
+    "pages/practice-result/practice-result",
     "pages/question-time/question-time",
     "pages/question-detail/question-detail",
     "pages/exam-result/exam-result",
@@ -12,7 +15,6 @@
     "pages/favorites/favorites",
     "pages/history/history",
     "pages/coming-soon/coming-soon",
-
     "pages/search/search",
     "pages/profile-edit/profile-edit"
   ],
@@ -42,7 +44,6 @@
       }
     ]
   },
-
   "style": "v2",
   "sitemapLocation": "sitemap.json"
 }

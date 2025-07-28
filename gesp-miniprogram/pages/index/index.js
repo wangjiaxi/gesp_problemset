@@ -1,6 +1,7 @@
 // pages/index/index.js
 const app = getApp();
 const util = require('../../utils/util.js');
+const bannersData = require('../../data/banners.js');
 
 Page({
   /**
@@ -136,58 +137,33 @@ Page({
    * 获取等级数据
    */
   getCategories: function () {
-    // 加载轮播图配置
-    try {
-      const fs = wx.getFileSystemManager();
-      const configContent = fs.readFileSync('data/carousel/carousel_config.json', 'utf-8');
-      const carouselConfig = JSON.parse(configContent);
-      
-      this.setData({
-        loading: false,
-        levels: [
-          { id: 'level_1', name: '一级', color: '#FF6B6B', description: 'GESP一级认证' },
-          { id: 'level_2', name: '二级', color: '#4ECDC4', description: 'GESP二级认证' },
-          { id: 'level_3', name: '三级', color: '#45B7D1', description: 'GESP三级认证' },
-          { id: 'level_4', name: '四级', color: '#96CEB4', description: 'GESP四级认证' },
-          { id: 'level_5', name: '五级', color: '#FFEAA7', description: 'GESP五级认证' },
-          { id: 'level_6', name: '六级', color: '#DDA0DD', description: 'GESP六级认证' },
-          { id: 'level_7', name: '七级', color: '#74B9FF', description: 'GESP七级认证' },
-          { id: 'level_8', name: '八级', color: '#FD79A8', description: 'GESP八级认证' }
-        ],
-        banners: carouselConfig.banners,
-        carouselInterval: carouselConfig.interval,
-        carouselDuration: carouselConfig.duration,
-        carouselCircular: carouselConfig.circular,
-        carouselIndicatorDots: carouselConfig.indicatorDots,
-        carouselIndicatorColor: carouselConfig.indicatorColor,
-        carouselIndicatorActiveColor: carouselConfig.indicatorActiveColor
-      });
-    } catch (e) {
-      console.error('读取轮播图配置失败:', e);
-      // 使用默认数据
-      this.setData({
-        loading: false,
-        levels: [
-          { id: 'level_1', name: '一级', color: '#FF6B6B', description: 'GESP一级认证' },
-          { id: 'level_2', name: '二级', color: '#4ECDC4', description: 'GESP二级认证' },
-          { id: 'level_3', name: '三级', color: '#45B7D1', description: 'GESP三级认证' },
-          { id: 'level_4', name: '四级', color: '#96CEB4', description: 'GESP四级认证' },
-          { id: 'level_5', name: '五级', color: '#FFEAA7', description: 'GESP五级认证' },
-          { id: 'level_6', name: '六级', color: '#DDA0DD', description: 'GESP六级认证' },
-          { id: 'level_7', name: '七级', color: '#74B9FF', description: 'GESP七级认证' },
-          { id: 'level_8', name: '八级', color: '#FD79A8', description: 'GESP八级认证' }
-        ],
-        banners: [
-          { id: 1, image: '../../images/banner-java.png', url: '/pages/question-detail/question-detail?id=1001' }
-        ],
-        carouselInterval: 3000,
-        carouselDuration: 500,
-        carouselCircular: true,
-        carouselIndicatorDots: true,
-        carouselIndicatorColor: 'rgba(255, 255, 255, 0.6)',
-        carouselIndicatorActiveColor: '#FFFFFF'
-      });
-    }
+    // 从轮播图数据文件获取数据
+    const banners = bannersData.getBanners();
+    const config = bannersData.getConfig();
+    
+    // 等级数据
+    const levels = [
+      { id: 'level_1', name: '一级', color: '#FF6B6B', description: 'GESP一级认证' },
+      { id: 'level_2', name: '二级', color: '#4ECDC4', description: 'GESP二级认证' },
+      { id: 'level_3', name: '三级', color: '#45B7D1', description: 'GESP三级认证' },
+      { id: 'level_4', name: '四级', color: '#96CEB4', description: 'GESP四级认证' },
+      { id: 'level_5', name: '五级', color: '#FFEAA7', description: 'GESP五级认证' },
+      { id: 'level_6', name: '六级', color: '#DDA0DD', description: 'GESP六级认证' },
+      { id: 'level_7', name: '七级', color: '#74B9FF', description: 'GESP七级认证' },
+      { id: 'level_8', name: '八级', color: '#FD79A8', description: 'GESP八级认证' }
+    ];
+    
+    this.setData({
+      loading: false,
+      levels: levels,
+      banners: banners,
+      carouselInterval: config.interval,
+      carouselDuration: config.duration,
+      carouselCircular: config.circular,
+      carouselIndicatorDots: config.indicatorDots,
+      carouselIndicatorColor: config.indicatorColor,
+      carouselIndicatorActiveColor: config.indicatorActiveColor
+    });
   },
 
   /**
@@ -223,9 +199,9 @@ Page({
     const levelId = dataset.id;
     const levelName = dataset.name;
     
-    // 跳转到题型选择页面
+    // 跳转到考试场次选择页面
     wx.navigateTo({
-      url: `/pages/question-type/question-type?levelId=${levelId}&levelName=${encodeURIComponent(levelName)}`
+      url: `/pages/exam-sessions/exam-sessions?levelId=${levelId}&levelName=${encodeURIComponent(levelName)}`
     });
   },
 

@@ -1,0 +1,135 @@
+{
+    "examInfo": {
+        "year": 2023,
+        "month": 3,
+        "language": "C++",
+        "level": 1,
+        "examDate": "2023-03-18",
+        "duration": 60,
+        "totalQuestions": 15,
+        "passingScore": 60
+    },
+    "questions": [
+        {
+            "id": "202303C1_01",
+            "type": "choice",
+            "question": "在C++中，以下哪个是正确的变量声明？",
+            "options": [
+                {
+                    "key": "A",
+                    "value": "int 2num;"
+                },
+                {
+                    "key": "B",
+                    "value": "int num2;"
+                },
+                {
+                    "key": "C",
+                    "value": "int num-2;"
+                },
+                {
+                    "key": "D",
+                    "value": "int class;"
+                }
+            ],
+            "answer": "B",
+            "explanation": "C++变量名必须以字母或下划线开头，不能以数字开头，不能包含连字符，不能使用关键字。",
+            "difficulty": 1,
+            "tags": [
+                "变量声明",
+                "基础语法"
+            ],
+            "points": 4
+        },
+        {
+            "id": "202303C1_02",
+            "type": "judge",
+            "question": "C++是一种面向对象的编程语言。",
+            "options": [],
+            "answer": "true",
+            "explanation": "C++支持面向对象编程，包括类、对象、继承、封装和多态等特性。",
+            "difficulty": 1,
+            "tags": [
+                "语言特性",
+                "面向对象"
+            ],
+            "points": 4
+        },
+        {
+            "id": "202303C1_03",
+            "type": "choice",
+            "question": "以下哪个符号用于C++中的单行注释？",
+            "options": [
+                {
+                    "key": "A",
+                    "value": "/* */"
+                },
+                {
+                    "key": "B",
+                    "value": "//"
+                },
+                {
+                    "key": "C",
+                    "value": "#"
+                },
+                {
+                    "key": "D",
+                    "value": "--"
+                }
+            ],
+            "answer": "B",
+            "explanation": "C++中使用//进行单行注释，/**/用于多行注释。",
+            "difficulty": 1,
+            "tags": [
+                "注释",
+                "基础语法"
+            ],
+            "points": 4
+        },
+        {
+            "id": "202303C1_04",
+            "type": "judge",
+            "question": "C++程序的执行从main()函数开始。",
+            "options": [],
+            "answer": "true",
+            "explanation": "C++程序的执行入口点是main()函数，程序从这里开始执行。",
+            "difficulty": 1,
+            "tags": [
+                "程序结构",
+                "main函数"
+            ],
+            "points": 4
+        },
+        {
+            "id": "202303C1_05",
+            "type": "choice",
+            "question": "在C++中，以下哪个数据类型占用内存最小？",
+            "options": [
+                {
+                    "key": "A",
+                    "value": "int"
+                },
+                {
+                    "key": "B",
+                    "value": "char"
+                },
+                {
+                    "key": "C",
+                    "value": "float"
+                },
+                {
+                    "key": "D",
+                    "value": "double"
+                }
+            ],
+            "answer": "B",
+            "explanation": "char类型通常占用1个字节，是基本数据类型中占用内存最小的。",
+            "difficulty": 1,
+            "tags": [
+                "数据类型",
+                "内存占用"
+            ],
+            "points": 4
+        }
+    ]
+}

@@ -1,7 +1,5 @@
 // pages/question-type/question-type.js
-const app = getApp();
-const util = require('../../utils/util.js');
-const dataManager = require('../../utils/dataManager.js');
+const problemManager = require('../../utils/problemManager.js');
 
 Page({
   /**
@@ -10,6 +8,9 @@ Page({
   data: {
     levelId: '',
     levelName: '',
+    sessionId: '',
+    sessionName: '',
+    language: 'C++',
     questionTypes: [
       {
         id: 'choice',
@@ -32,19 +33,21 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    const { levelId, levelName } = options;
+    const { levelId, levelName, sessionId, sessionName, language } = options;
     this.setData({
       levelId: levelId || '',
-      levelName: decodeURIComponent(levelName || '')
+      levelName: decodeURIComponent(levelName || ''),
+      sessionId: sessionId || '',
+      sessionName: decodeURIComponent(sessionName || ''),
+      language: language || 'C++'
     });
     
     // 设置导航栏标题
     wx.setNavigationBarTitle({
-      title: this.data.levelName
+      title: `${this.data.sessionName} - ${this.data.levelName}`
     });
 
-    // 更新题型数据，添加题目数量
-    this.updateQuestionTypesWithCount();
+
   },
 
   /**
@@ -99,44 +102,7 @@ Page({
     };
   },
 
-  /**
-   * 更新题型数据，添加题目数量
-   */
-  updateQuestionTypesWithCount: function() {
-    const level = parseInt(this.data.levelId);
-    const updatedTypes = [...this.data.questionTypes];
 
-    updatedTypes.forEach(async (type, index) => {
-      try {
-        // 获取实际题目数据
-        const questions = dataManager.getQuestionsByLevelAndType(level, type.id);
-        const hasQuestions = questions.length > 0;
-
-        updatedTypes[index] = {
-          ...type,
-          questionCount: questions.length,
-          hasQuestions: hasQuestions
-        };
-
-        this.setData({
-          questionTypes: updatedTypes
-        });
-      } catch (error) {
-        console.error('更新题型数据失败:', error);
-        // 出错时获取题目数据
-        const questions = dataManager.getQuestionsByLevelAndType(level, type.id);
-        updatedTypes[index] = {
-          ...type,
-          questionCount: questions.length,
-          hasQuestions: questions.length > 0
-        };
-
-        this.setData({
-          questionTypes: updatedTypes
-        });
-      }
-    });
-  },
 
   /**
    * 点击题型事件
@@ -145,31 +111,35 @@ Page({
     const dataset = e.currentTarget.dataset;
     const typeId = dataset.id;
     const typeName = dataset.name;
-    const level = parseInt(this.data.levelId);
+    const { sessionId, language, levelId } = this.data;
+    const level = parseInt(levelId);
     
     // 显示加载中提示
     wx.showLoading({
-      title: '正在检查题目...',
+      title: '正在加载题目...',
     });
     
     // 检查该分类下是否有题目
-    const questions = dataManager.getQuestionsByLevelAndType(level, typeId);
-    const hasQuestions = questions.length > 0;
+    const questionCount = problemManager.getQuestionCountByType(sessionId, language, level, typeId);
     
     setTimeout(() => {
       wx.hideLoading();
       
-      if (hasQuestions) {
-        // 有题目，跳转到时间选择页面
+      if (questionCount > 0) {
+        // 有题目，直接跳转到刷题界面
         wx.navigateTo({
-          url: `/pages/question-time/question-time?levelId=${this.data.levelId}&levelName=${encodeURIComponent(this.data.levelName)}&typeId=${typeId}&typeName=${encodeURIComponent(typeName)}`
+          url: `/pages/practice/practice?sessionId=${sessionId}&levelId=${levelId}&levelName=${encodeURIComponent(this.data.levelName)}&sessionName=${encodeURIComponent(this.data.sessionName)}&language=${language}&typeId=${typeId}&typeName=${encodeURIComponent(typeName)}`
         });
       } else {
-        // 没有题目，跳转到敬请期待页面
-        wx.navigateTo({
-          url: `/pages/coming-soon/coming-soon?level=${level}&type=${typeId}`
+        // 没有题目，弹窗提示
+        wx.showModal({
+          title: '提示',
+          content: '题目录入中，请稍候',
+          showCancel: false,
+          confirmText: '知道了',
+          confirmColor: '#4169E1'
         });
       }
-    }, 500);
+    }, 300);
   }
 });

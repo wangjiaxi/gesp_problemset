@@ -1,0 +1,88 @@
+<!--pages/practice/practice.wxml-->
+<view class="container">
+  <!-- 进度条 -->
+  <view class="progress-container">
+    <view class="progress-bar">
+      <view class="progress-fill" style="width: {{progress}}%"></view>
+    </view>
+    <view class="progress-text">{{currentIndex + 1}}/{{questions.length}}</view>
+  </view>
+
+  <!-- 题目内容 -->
+  <view class="question-container" wx:if="{{currentQuestion}}">
+    <view class="question-header">
+      <view class="question-type">{{typeName}}</view>
+      <view class="question-number">第{{currentIndex + 1}}题</view>
+    </view>
+    
+    <view class="question-content">
+      <view class="question-text">{{currentQuestion.question}}</view>
+      
+      <!-- 代码块（如果有） -->
+      <view class="code-block" wx:if="{{currentQuestion.codeBlock}}">
+        <text class="code-text">{{currentQuestion.codeBlock}}</text>
+      </view>
+    </view>
+
+    <!-- 选择题选项 -->
+    <view class="options-container" wx:if="{{currentQuestion.type === 'choice'}}">
+      <view 
+        class="option-item {{getUserAnswer(currentQuestion.id) === item.key ? 'selected' : ''}}"
+        wx:for="{{currentQuestion.options}}" 
+        wx:key="key"
+        bindtap="onAnswerSelect"
+        data-answer="{{item.key}}"
+      >
+        <view class="option-key">{{item.key}}</view>
+        <view class="option-value">{{item.value}}</view>
+      </view>
+    </view>
+
+    <!-- 判断题选项 -->
+    <view class="judge-container" wx:if="{{currentQuestion.type === 'judge'}}">
+      <view 
+        class="judge-option {{getUserAnswer(currentQuestion.id) === 'true' ? 'selected' : ''}}"
+        bindtap="onAnswerSelect"
+        data-answer="true"
+      >
+        <view class="judge-icon">✓</view>
+        <view class="judge-text">正确</view>
+      </view>
+      <view 
+        class="judge-option {{getUserAnswer(currentQuestion.id) === 'false' ? 'selected' : ''}}"
+        bindtap="onAnswerSelect"
+        data-answer="false"
+      >
+        <view class="judge-icon">✗</view>
+        <view class="judge-text">错误</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-actions">
+    <button 
+      class="action-btn prev-btn" 
+      bindtap="onPrevQuestion"
+      disabled="{{currentIndex === 0}}"
+    >
+      上一题
+    </button>
+    
+    <button 
+      class="action-btn next-btn" 
+      bindtap="onNextQuestion"
+      wx:if="{{!showSubmitButton}}"
+    >
+      下一题
+    </button>
+    
+    <button 
+      class="action-btn submit-btn" 
+      bindtap="onSubmit"
+      wx:if="{{showSubmitButton}}"
+    >
+      提交答案
+    </button>
+  </view>
+</view>

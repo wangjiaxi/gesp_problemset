@@ -2,32 +2,40 @@
 <view class="container">
   <!-- 头像区域 -->
   <view class="avatar-section">
-    <view class="avatar-container" bindtap="onAvatarTap">
-      <image 
-        class="avatar-image" 
-        src="{{userInfo.avatarUrl}}" 
-        mode="aspectFill"
-        bindtap="onPreviewAvatar"
-        catchtap="onPreviewAvatar"
-      ></image>
-      <view class="avatar-overlay">
-        <text class="avatar-tip">点击更换头像</text>
+    <button 
+      class="avatar-button" 
+      open-type="chooseAvatar" 
+      bind:chooseavatar="onChooseAvatar"
+    >
+      <view class="avatar-container">
+        <image 
+          class="avatar-image" 
+          src="{{userInfo.avatarUrl}}" 
+          mode="aspectFill"
+          bindtap="onPreviewAvatar"
+          catchtap="onPreviewAvatar"
+        ></image>
+        <view class="avatar-overlay">
+          <text class="avatar-tip">点击更换头像</text>
+        </view>
       </view>
-    </view>
-    <text class="avatar-desc">支持使用微信头像或从相册选择</text>
+    </button>
+    <text class="avatar-desc">点击头像使用微信头像</text>
   </view>
 
   <!-- 昵称区域 -->
   <view class="nickname-section">
     <view class="section-title">昵称设置</view>
-    <view class="nickname-container" bindtap="onNickNameTap">
-      <view class="nickname-content">
-        <text class="nickname-text">{{userInfo.nickName}}</text>
-        <view class="nickname-arrow">
-          <text class="arrow">></text>
-        </view>
-      </view>
-      <text class="nickname-tip">点击设置昵称</text>
+    <view class="nickname-container">
+      <input 
+        class="nickname-input"
+        type="nickname"
+        placeholder="请输入昵称"
+        value="{{userInfo.nickName === '未设置昵称' ? '' : userInfo.nickName}}"
+        bindinput="onNicknameChange"
+        maxlength="20"
+      />
+      <text class="nickname-tip">直接输入或使用微信昵称</text>
     </view>
   </view>
 
